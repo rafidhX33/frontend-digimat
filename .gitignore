@@ -1,0 +1,10 @@
+# Contoh: Abaikan folder .angular/cache
+.angular/cache/
+
+# Abaikan node_modules (jika ada)
+node_modules/
+
+# Tambahkan folder atau file lain yang ingin diabaikan
+.env
+dist/
+build/
