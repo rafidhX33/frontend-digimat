@@ -13,7 +13,7 @@ export const MENU: MenuItem[] = [
     subItems: [
       {
         id: 3,
-        label: 'MENUITEMS.DASHBOARD.LIST.ANALYTICS',
+        label: 'Packaging',
         link: '/analytics',
       parentId: 2
     }
