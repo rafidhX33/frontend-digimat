@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DomSanitizer } from '@angular/platform-browser';
+import Swal from 'sweetalert2';
 
 interface Supplier {
   kode_vendor: string;
@@ -14,7 +14,7 @@ interface Supplier {
 interface Material {
   material_code: string;
   nama_material: string;
-  kode_vendor: string;
+  // tambahkan properti lain jika diperlukan
 }
 
 @Component({
@@ -23,97 +23,144 @@ interface Material {
   styleUrls: ['./crm.component.scss']
 })
 export class CrmComponent implements OnInit {
-  // Dropdown data
+  // Data untuk dropdown
   materials: Material[] = [];
   filteredSuppliers: Supplier[] = [];
   selectedMaterial: string | null = null;
   selectedSupplier: Supplier | null = null;
 
-  // For file upload
-  selectedFile: File | null = null;
-  // List of documents (hasil upload)
+  // File upload untuk tiga dokumen
+  selectedFileQs: File | null = null;
+  selectedFileSs: File | null = null;
+  selectedFileAios: File | null = null;
+
+  // List dokumen yang sudah diupload
   documents: any[] = [];
 
   // API URL (sesuaikan jika diperlukan)
   private apiUrl = 'http://localhost:5000';
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loadMaterials();
     this.getDocuments();
   }
 
-  /** Mengambil daftar material dari API (database 1) */
+  /** Ambil daftar material dari API (database 1) */
   loadMaterials(): void {
     this.http.get<any>(`${this.apiUrl}/api/materials`).subscribe(
       res => {
-        // Sesuaikan dengan format API, misalnya: { success: true, data: [...] }
+        // Pastikan respons API mengandung data di properti "data"
         this.materials = res.data || res;
+        console.log('Materials:', this.materials);
       },
       error => {
         console.error('Error loading materials:', error);
+        Swal.fire('Error', 'Gagal memuat data material.', 'error');
       }
     );
   }
 
-  /** Ketika material dipilih, filter supplier berdasarkan material tersebut */
+  /** Saat material dipilih, ambil supplier terkait dari API */
   updateSuppliers(): void {
-    if (!this.selectedMaterial) return;
-    // Misal endpoint: GET /api/suppliers/material/{material_code}
-    this.http.get<any>(`${this.apiUrl}/api/suppliers/material/${this.selectedMaterial}`).subscribe(
+    if (!this.selectedMaterial) {
+      console.warn('Selected material kosong');
+      return;
+    }
+    const url = `${this.apiUrl}/api/suppliers/material/${this.selectedMaterial}`;
+    console.log('Fetching suppliers from:', url);
+    this.http.get<any>(url).subscribe(
       res => {
-        this.filteredSuppliers = res.data || res;
-        this.selectedSupplier = null; // Reset pilihan supplier jika material berubah
+        console.log('Response supplier:', res);
+        if (res && res.success && Array.isArray(res.data)) {
+          this.filteredSuppliers = res.data;
+        } else {
+          console.warn('Format response supplier tidak sesuai:', res);
+          this.filteredSuppliers = [];
+        }
+        this.selectedSupplier = null;
+        if (this.filteredSuppliers.length === 0) {
+          console.warn('Supplier tidak ditemukan untuk material:', this.selectedMaterial);
+          Swal.fire('Info', 'Supplier tidak ditemukan untuk material yang dipilih.', 'info');
+        }
       },
       error => {
         console.error('Error loading suppliers:', error);
+        Swal.fire('Error', 'Gagal memuat data supplier.', 'error');
+        this.filteredSuppliers = [];
       }
     );
   }
 
   /** Opsional: Update info supplier jika diperlukan */
   updateSupplierInfo(): void {
-    if (!this.selectedSupplier) return;
-    // Tambahkan logika tambahan jika ingin memuat info detail supplier
+    console.log('Selected supplier:', this.selectedSupplier);
+    // Tambahkan logika tambahan jika diperlukan untuk memuat info detail supplier
   }
 
-  /** Menangani pemilihan file */
-  onFileSelected(event: any): void {
+  /** Terima file dari input berdasarkan tipe dokumen */
+  onFileSelected(event: any, type: string): void {
     if (event.target.files && event.target.files.length > 0) {
-      this.selectedFile = event.target.files[0];
+      const file: File = event.target.files[0];
+      if (type === 'doc_qs') {
+        this.selectedFileQs = file;
+      } else if (type === 'doc_ss') {
+        this.selectedFileSs = file;
+      } else if (type === 'doc_aios') {
+        this.selectedFileAios = file;
+      }
     }
   }
 
-  /** Mengirim form upload dokumen ke API (database 2) */
+  /** Kirim form upload dokumen ke API (database 2) */
   onSubmit(): void {
     if (!this.selectedSupplier || !this.selectedMaterial) {
-      alert('Silakan pilih material dan supplier.');
+      Swal.fire('Error', 'Silakan pilih material dan supplier.', 'error');
+      return;
+    }
+    if (!this.selectedSupplier.kode_vendor) {
+      Swal.fire('Error', 'Data supplier tidak lengkap. Kode vendor tidak ditemukan.', 'error');
       return;
     }
     const formData = new FormData();
-    // Gunakan kode vendor dari supplier yang dipilih dan material code yang dipilih
     formData.append('kode_vendor', this.selectedSupplier.kode_vendor);
     formData.append('material_code', this.selectedMaterial);
-    if (this.selectedFile) {
-      formData.append('doc_qs', this.selectedFile, this.selectedFile.name);
+    if (this.selectedFileQs) {
+      formData.append('doc_qs', this.selectedFileQs, this.selectedFileQs.name);
     }
+    if (this.selectedFileSs) {
+      formData.append('doc_ss', this.selectedFileSs, this.selectedFileSs.name);
+    }
+    if (this.selectedFileAios) {
+      formData.append('doc_aios', this.selectedFileAios, this.selectedFileAios.name);
+    }
+    console.log('Submitting form with:', {
+      kode_vendor: this.selectedSupplier.kode_vendor,
+      material_code: this.selectedMaterial,
+      doc_qs: this.selectedFileQs ? this.selectedFileQs.name : null,
+      doc_ss: this.selectedFileSs ? this.selectedFileSs.name : null,
+      doc_aios: this.selectedFileAios ? this.selectedFileAios.name : null
+    });
     this.http.post(`${this.apiUrl}/api/doc`, formData).subscribe(
       res => {
         console.log('Document created:', res);
+        Swal.fire('Success', 'Dokumen berhasil diupload.', 'success');
         this.getDocuments();
       },
       error => {
         console.error('Error uploading document:', error);
+        Swal.fire('Error', 'Gagal mengupload dokumen.', 'error');
       }
     );
   }
 
-  /** Mengambil daftar dokumen yang sudah diupload */
+  /** Ambil daftar dokumen yang sudah diupload */
   getDocuments(): void {
     this.http.get<any>(`${this.apiUrl}/api/doc`).subscribe(
       res => {
         this.documents = res.data || res;
+        console.log('Documents:', this.documents);
       },
       error => {
         console.error('Error loading documents:', error);

@@ -11,41 +11,46 @@
         <div class="card-body flex-grow-1">
           <!-- Material Selection -->
           <div class="row d-flex align-items-center mb-3">
-            <div class="col-auto">
+            <div class="col-auto" style="min-width: 200px;">
               <h6 class="mb-0">Material</h6>
             </div>
-            <div class="col-auto">
-              <select
-                id="material-select"
-                class="form-select form-select-sm"
+            <div class="col-auto" style="min-width: 250px;">
+              <ng-select
+                class="w-100"
+                [items]="materials"
+                bindLabel="nama_material"
+                bindValue="material_code"
+                placeholder="Pilih Material"
                 [(ngModel)]="selectedMaterial"
+                name="material"
                 (change)="updateSuppliers()"
-              >
-                <option selected disabled>Choose Material</option>
-                <option *ngFor="let material of materials" [value]="material.material_code">
-                  {{ material.nama_material }}
-                </option>
-              </select>
+                [searchable]="true"
+                required>
+              </ng-select>
             </div>
           </div>
 
           <!-- Supplier Selection -->
           <div class="row d-flex align-items-center mb-3">
-            <div class="col-auto">
+            <div class="col-auto" style="min-width: 200px;">
               <h6 class="mb-0">Supplier</h6>
             </div>
-            <div class="col-auto">
-              <select
+            <div class="col-auto" style="min-width: 250px;">
+              <ng-select
+                class="w-100"
                 id="supplier-select"
-                class="form-select form-select-sm"
+                [items]="filteredSuppliers"
+                bindLabel="name_vendor"
+                placeholder="Pilih Supplier"
                 [(ngModel)]="selectedSupplier"
+                name="supplier"
                 (change)="updateSupplierInfo()"
-              >
-                <option selected disabled>Choose Supplier</option>
-                <option *ngFor="let supplier of filteredSuppliers" [value]="supplier.kode_vendor">
-                  {{ supplier.name_vendor }}
-                </option>
-              </select>
+                [searchable]="true"
+                required>
+                <ng-template ng-option-tmp let-item="item">
+                  {{ item.name_vendor }} ({{ item.kode_vendor }})
+                </ng-template>
+              </ng-select>
             </div>
           </div>
 
@@ -87,6 +92,21 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Menampilkan PDF dari CRM (mst_doc) -->
+    <div *ngIf="pdfs.length > 0" class="row mt-4">
+      <div class="col-12">
+        <h5>Dokumen CRM (PDF)</h5>
+      </div>
+      <div *ngFor="let pdf of pdfs" class="col-md-4 mb-3">
+        <h6>{{ pdf.title }}</h6>
+        <iframe
+          [src]="pdf.src"
+          style="width: 100%; height: 400px;"
+          frameborder="0">
+        </iframe>
       </div>
     </div>
 

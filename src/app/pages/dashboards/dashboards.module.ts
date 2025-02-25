@@ -30,6 +30,7 @@ import { CryptoComponent } from './crypto/crypto.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { NftComponent } from './nft/nft.component';
 import { JobComponent } from './job/job.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { JobComponent } from './job/job.component';
     NgbTypeaheadModule,
     NgbPaginationModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgSelectModule
   ]
 })
 export class DashboardsModule { }
