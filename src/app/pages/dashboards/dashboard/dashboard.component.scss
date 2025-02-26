@@ -1,0 +1,47 @@
+.niceday {
+    font-size: 24px; /* ukuran font */
+    font-weight: bold; /* tebal */
+    color: #ffffff; /* warna teks */
+  }
+  
+  .worktoday {
+    font-size: 12px; /* ukuran font */
+    color: #000000; /* warna teks */
+  }
+  
+
+.welcome {
+    font-weight: bold; /* Mengatur teks menjadi tebal */
+    font-size: 50px; /* Mengatur ukuran teks */
+    color: #000000; /* Warna teks untuk kelas welcome */
+    margin: 10px 0;
+  }
+  
+  .squad {
+    font-weight: bold; /* Membuat teks menjadi tebal */
+    font-size: 150px; /* Mengatur ukuran teks */
+    background: linear-gradient(to right, #3eff61, #127d8b, #101559); /* Gradasi warna latar belakang */
+    -webkit-background-clip: text; /* Menggunakan latar belakang sebagai warna teks (untuk browser WebKit) */
+    -webkit-text-fill-color: transparent; /* Mengatur warna teks menjadi transparan (untuk browser WebKit) */
+    line-height: 1;
+  }
+  .love-icon1 {
+    width: 80px; /* Sesuaikan ukuran dengan kebutuhan Anda */
+    height: 80px; /* Sesuaikan ukuran dengan kebutuhan Anda */
+    margin-right: 0.5px; /* Atur jarak antara gambar dengan teks */
+  }
+  
+  .love-icon2 {
+    width: 80px; /* Sesuaikan ukuran dengan kebutuhan Anda */
+    height: 80px; /* Sesuaikan ukuran dengan kebutuhan Anda */
+    margin-right: 5px; /* Atur jarak antara gambar dengan teks */
+  }
+  
+  .visisquad {
+    font-weight: bold; /* Membuat teks menjadi tebal */
+    font-size: 28px; /* Mengatur ukuran teks */
+    background: linear-gradient(to right, #09b786, #5522ed); /* Gradasi warna latar belakang */
+    -webkit-background-clip: text; /* Menggunakan latar belakang sebagai warna teks (untuk browser WebKit) */
+    -webkit-text-fill-color: transparent; /* Mengatur warna teks menjadi transparan (untuk browser WebKit) */
+  }
+  

@@ -1,0 +1,69 @@
+.app-menu {
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid rgba(234, 234, 234, 0.765);
+    margin: 10px 0px 10px 10px;
+    box-shadow: none !important;
+  }
+  
+  .nav-icon {
+    background-color: #eceded;
+    margin-right: 12px;
+    padding-left: 5.1px;
+    border-radius: 5px;
+    border: 1px solid #dedede;
+    box-shadow: rgba(50, 50, 93, 0.17) 0px 2px 5px -1px,
+      rgba(0, 0, 0, 0.17) 0px 1px 3px -1px;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .nav-link {
+    transition: background-color 0.3s ease-in-out, padding 0.3s ease-in-out;
+    border-radius: 7px;
+    margin: 0px 7.5px;
+  }
+  
+  .nav-link:hover {
+    background-color: #fafafa;
+    padding: 12px;
+    border-radius: 7px;
+    border: 1px solid #f1f1f1;
+    color: black !important;
+    font-weight: 500 !important;
+    font-size: 15px;
+    .nav-icon {
+      background: linear-gradient(173deg, rgba(105,94,241,1) 0%, rgba(89,79,214,1) 100%);
+      color: white;
+      border-radius: 5px;
+      border: 1px solid #4e45cc;
+    }
+  }
+  
+  .is-parent.active {
+    background-color: #fafafa;
+    padding: 12px;
+    border-radius: 7px;
+    margin: 0px 7.5px;
+    border: 1px solid #f1f1f1;
+    color: black !important;
+    font-weight: 500 !important;
+    font-size: 15px;
+  }
+  
+  .nav-link.active .nav-icon {
+    background: linear-gradient(173deg, rgba(105,94,241,1) 0%, rgba(89,79,214,1) 100%);
+    color: white;
+    border-radius: 5px;
+    border: 1px solid #4e45cc;
+  }
+  
+  .nav-link.active {
+    font-weight: 500 !important; 
+    color: black !important;
+    font-size: 15px;
+    // letter-spacing: 1px;
+  }
+  
+  
+  //https://colorhunt.co/palette/f4eeffdcd6f7a6b1e1424874 --> TEMA SQUAD
+  

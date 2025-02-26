@@ -1,3 +1,4 @@
+import { icon } from 'leaflet';
 import { MenuItem } from './menu.model';
 
 export const MENU: MenuItem[] = [
@@ -9,7 +10,7 @@ export const MENU: MenuItem[] = [
   {
     id: 2,
     label: 'MENUITEMS.DASHBOARD.TEXT',
-    icon: 'home',
+    icon: 'ri-home-gear-fill',
     subItems: [
       {
         id: 3,
@@ -480,7 +481,7 @@ export const MENU: MenuItem[] = [
   {
     id: 55,
     label: 'Supplier',
-    icon: 'users',
+    icon: 'ri-home-6-fill',
     subItems: [
       {
         id: 56,
