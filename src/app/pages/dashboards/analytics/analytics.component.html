@@ -2,7 +2,7 @@
 
 <div class="container mt-4">
   <div class="row align-items-stretch">
-    <div class="col-md-6">
+    <div class="col-md-9">
       <div class="card h-100 d-flex flex-column">
         <div class="card-header text-center">
           <h5>Material & Supplier Selection</h5>
@@ -84,7 +84,7 @@
               <div class="card text-center bg-warning text-dark h-100">
                 <div class="card-body">
                   <h6 class="card-title">Supplier Score</h6>
-                  <p class="card-text text-light fw-bold">
+                  <p class="card-text text-white fw-bold">
                     {{ selectedSupplier.supplierScore ? selectedSupplier.supplierScore : '-' }}
                   </p>
                 </div>
@@ -96,7 +96,7 @@
               <div class="card text-center bg-danger text-white h-100">
                 <div class="card-body">
                   <h6 class="card-title">Complaint</h6>
-                  <p class="card-text fw-bold">
+                  <p class="card-text text-white fw-bold">
                     {{ selectedSupplier.complaintCount !== undefined ? selectedSupplier.complaintCount : 0 }}
                   </p>
                 </div>
@@ -107,6 +107,9 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
 
     <!-- Menampilkan PDF dari CRM (mst_doc) -->
     <div *ngIf="pdfs.length > 0" class="row mt-4">
@@ -139,7 +142,7 @@
         </div>
       </div>
     </div>
-  </div>
+
 
   <!-- Additional Sections -->
   <div class="container mt-4">
@@ -156,4 +159,4 @@
       </div>
     </div>
   </div>
-</div>
+
