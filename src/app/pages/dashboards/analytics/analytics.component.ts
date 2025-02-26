@@ -6,16 +6,15 @@ import Swal from 'sweetalert2';
 interface Supplier {
   kode_vendor: string;
   name_vendor: string;
-  image?: string;
-  status?: string;
-  supplierScore?: number;
+  image?: string; // Logo Supplier
+  status?: string; // Status Supplier
+  supplierScore?: string; // Grade (A, B, C, D)
   complaintCount?: number;
 }
 
 interface Material {
   material_code: string;
   nama_material: string;
-  // properti lain jika diperlukan
 }
 
 @Component({
@@ -31,13 +30,12 @@ export class AnalyticsComponent implements OnInit {
   filteredSuppliers: Supplier[] = [];
   pdfs: { src: SafeResourceUrl, title: string }[] = [];
   certifications: any[] = [];
-  supplierInfo: any = null;
+  supplierInfo: Supplier | null = null;
   visualDesigns: any[] = [];
   materialFlowProcess: any[] = [];
   supplierQualityDevice: any[] = [];
   supplierAudits: any[] = [];
 
-  // API URL dan baseUrl untuk file PDF
   private apiUrl = 'http://localhost:5000';
   public baseUrl: string = 'http://localhost:5000';
 
@@ -76,12 +74,11 @@ export class AnalyticsComponent implements OnInit {
       return;
     }
     const url = `${this.apiUrl}/api/suppliers/material/${this.selectedMaterial}`;
-    console.log("Fetching suppliers from:", url);
     this.http.get<any>(url).subscribe(
       response => {
         if (response.success && Array.isArray(response.data)) {
           this.filteredSuppliers = response.data;
-          this.selectedSupplier = null; // Reset supplier jika material berubah
+          this.selectedSupplier = null;
           console.log("Suppliers loaded:", this.filteredSuppliers);
         } else {
           console.error("Invalid supplier data format:", response);
@@ -99,16 +96,93 @@ export class AnalyticsComponent implements OnInit {
   updateSupplierInfo() {
     if (!this.selectedSupplier || !this.selectedMaterial) return;
     console.log("Selected supplier:", this.selectedSupplier);
-    this.supplierInfo = this.selectedSupplier;
-    // Memuat dokumen hanya jika kombinasi supplier dan material cocok
+    this.supplierInfo = { ...this.selectedSupplier, supplierScore: "-", complaintCount: 0 };
+
+    // Load Supplier Grade, Complaint Count, Logo, dan Status
+    this.loadSupplierData(this.selectedSupplier.kode_vendor);
+
+    // Load Dokumen Supplier
     this.loadSupplierDocs(this.selectedSupplier.kode_vendor, this.selectedMaterial);
-    // Fungsi lain seperti loadCertifications(), loadVisualDesigns(), dll. bisa ditambahkan di sini.
+  }
+
+  /** Mengambil data Supplier (Grade, Complaint Count, Logo, Status) */
+  loadSupplierData(kodeVendor: string) {
+    const start = "2024-01-01";
+    const end = "2024-12-31";
+    const urlGrade = `${this.apiUrl}/api/suppliers/grade?kode_vendor=${kodeVendor}&start=${start}&end=${end}`;
+    const urlComplaint = `${this.apiUrl}/api/suppliers/complaints?kode_vendor=${kodeVendor}&start=${start}&end=${end}`;
+    const urlSupplierDetails = `${this.apiUrl}/api/suppliers/details?kode_vendor=${kodeVendor}`;
+
+    // Fetch Supplier Grade
+    this.http.get<any>(urlGrade).subscribe(
+      response => {
+        if (response.success && response.data.length > 0) {
+          this.selectedSupplier = {
+            ...this.selectedSupplier!,
+            supplierScore: response.data[0].Grade_Material || "-"
+          };
+        } else {
+          this.selectedSupplier = {
+            ...this.selectedSupplier!,
+            supplierScore: "-"
+          };
+        }
+      },
+      error => {
+        console.error("Error loading supplier grade:", error);
+        this.selectedSupplier = {
+          ...this.selectedSupplier!,
+          supplierScore: "-"
+        };
+      }
+    );
+
+    // Fetch Complaint Count
+    this.http.get<any>(urlComplaint).subscribe(
+      response => {
+        if (response.success) {
+          this.selectedSupplier = {
+            ...this.selectedSupplier!,
+            complaintCount: response.data.total_complaints || 0
+          };
+        } else {
+          this.selectedSupplier = {
+            ...this.selectedSupplier!,
+            complaintCount: 0
+          };
+        }
+      },
+      error => {
+        console.error("Error loading complaint count:", error);
+        this.selectedSupplier = {
+          ...this.selectedSupplier!,
+          complaintCount: 0
+        };
+      }
+    );
+
+    // Fetch Supplier Logo & Status
+    this.http.get<any>(urlSupplierDetails).subscribe(
+      response => {
+        if (response.success && response.data) {
+          this.selectedSupplier = {
+            ...this.selectedSupplier!,
+            image: response.data.image || "default-logo.png",
+            status: response.data.status || "Unknown"
+          };
+        }
+      },
+      error => {
+        console.error("Error loading supplier details:", error);
+      }
+    );
   }
 
   /** Memuat dokumen PDF dari endpoint /api/doc dengan filter berdasarkan kode_vendor dan material_code */
   loadSupplierDocs(kodeVendor: string, materialCode: string) {
     const url = `${this.apiUrl}/api/doc?supplier=${kodeVendor}`;
     console.log("Fetching docs from:", url);
+
     this.http.get<any>(url).subscribe(
       response => {
         let docs: any[] = [];
@@ -120,16 +194,18 @@ export class AnalyticsComponent implements OnInit {
           console.error("Invalid doc data format:", response);
           return;
         }
+
         // Filter dokumen berdasarkan kombinasi kode_vendor dan material_code
         const filteredDocs = docs.filter(doc =>
           doc.kode_vendor === kodeVendor && doc.material_code === materialCode
         );
+
         this.pdfs = [];
         filteredDocs.forEach(doc => {
-          // Ubah backslash menjadi slash agar URL valid
           const qsPath = doc.doc_url_qs ? doc.doc_url_qs.replace(/\\/g, '/') : null;
           const ssPath = doc.doc_url_ss ? doc.doc_url_ss.replace(/\\/g, '/') : null;
           const aiosPath = doc.doc_url_aios ? doc.doc_url_aios.replace(/\\/g, '/') : null;
+
           if (qsPath) {
             const qsUrl = `${this.baseUrl}/${qsPath}`;
             this.pdfs.push({

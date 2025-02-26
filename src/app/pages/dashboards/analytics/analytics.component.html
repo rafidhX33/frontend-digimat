@@ -1,6 +1,5 @@
 <app-breadcrumbs title="Packaging" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
 
-<!-- Material and Supplier Selection Section -->
 <div class="container mt-4">
   <div class="row align-items-stretch">
     <div class="col-md-6">
@@ -54,43 +53,57 @@
             </div>
           </div>
 
-          <!-- Supplier Info -->
+          <!-- Supplier Info: Logo, Status, Supplier Score, Complaint Count -->
           <div *ngIf="selectedSupplier" class="row mt-3">
+            <!-- Logo -->
             <div class="col-md-3">
               <div class="card text-center bg-primary text-white h-100">
-                <img
-                  [src]="selectedSupplier.image"
-                  alt="Supplier Logo"
-                  class="card-img-top"
-                  style="height: 80px; object-fit: contain"
-                />
+                <div class="card-body">
+                  <img
+                    [src]="selectedSupplier.image ? selectedSupplier.image : 'assets/default-logo.png'"
+                    alt="Supplier Logo"
+                    class="card-img-top"
+                    style="height: 80px; object-fit: contain"
+                  />
+                </div>
               </div>
             </div>
+
+            <!-- Status -->
             <div class="col-md-3">
               <div class="card text-center bg-success text-white h-100">
                 <div class="card-body">
                   <h6 class="card-title">Status</h6>
-                  <p class="card-text">{{ selectedSupplier.status }}</p>
+                  <p class="card-text fw-bold">{{ selectedSupplier.status ? selectedSupplier.status : 'Unknown' }}</p>
                 </div>
               </div>
             </div>
+
+            <!-- Supplier Score (Grade) -->
             <div class="col-md-3">
               <div class="card text-center bg-warning text-dark h-100">
                 <div class="card-body">
                   <h6 class="card-title">Supplier Score</h6>
-                  <p class="card-text">{{ selectedSupplier.supplierScore }}</p>
+                  <p class="card-text text-light fw-bold">
+                    {{ selectedSupplier.supplierScore ? selectedSupplier.supplierScore : '-' }}
+                  </p>
                 </div>
               </div>
             </div>
+
+            <!-- Complaint Count -->
             <div class="col-md-3">
               <div class="card text-center bg-danger text-white h-100">
                 <div class="card-body">
                   <h6 class="card-title">Complaint</h6>
-                  <p class="card-text">{{ selectedSupplier.complaintCount }}</p>
+                  <p class="card-text fw-bold">
+                    {{ selectedSupplier.complaintCount !== undefined ? selectedSupplier.complaintCount : 0 }}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
