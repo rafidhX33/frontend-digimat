@@ -21,6 +21,7 @@
     font-weight: bold; /* Membuat teks menjadi tebal */
     font-size: 150px; /* Mengatur ukuran teks */
     background: linear-gradient(to right, #3eff61, #127d8b, #101559); /* Gradasi warna latar belakang */
+    background-clip: text; /* Menggunakan latar belakang sebagai warna teks */
     -webkit-background-clip: text; /* Menggunakan latar belakang sebagai warna teks (untuk browser WebKit) */
     -webkit-text-fill-color: transparent; /* Mengatur warna teks menjadi transparan (untuk browser WebKit) */
     line-height: 1;
@@ -41,7 +42,7 @@
     font-weight: bold; /* Membuat teks menjadi tebal */
     font-size: 28px; /* Mengatur ukuran teks */
     background: linear-gradient(to right, #09b786, #5522ed); /* Gradasi warna latar belakang */
-    -webkit-background-clip: text; /* Menggunakan latar belakang sebagai warna teks (untuk browser WebKit) */
+    background-clip: text; /* Menggunakan latar belakang sebagai warna teks (untuk browser WebKit) */
     -webkit-text-fill-color: transparent; /* Mengatur warna teks menjadi transparan (untuk browser WebKit) */
   }
   

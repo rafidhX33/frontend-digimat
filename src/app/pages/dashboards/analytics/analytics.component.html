@@ -84,7 +84,7 @@
               <div class="card text-center bg-warning text-dark h-100">
                 <div class="card-body">
                   <h6 class="card-title">Supplier Score</h6>
-                  <p class="card-text text-white fw-bold">
+                  <p class="card-text fw-bold">
                     {{ selectedSupplier.supplierScore ? selectedSupplier.supplierScore : '-' }}
                   </p>
                 </div>
@@ -96,67 +96,107 @@
               <div class="card text-center bg-danger text-white h-100">
                 <div class="card-body">
                   <h6 class="card-title">Complaint</h6>
-                  <p class="card-text text-white fw-bold">
+                  <p class="card-text fw-bold">
                     {{ selectedSupplier.complaintCount !== undefined ? selectedSupplier.complaintCount : 0 }}
                   </p>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </div><!-- end card -->
+    </div><!-- end col-md-9 -->
+  </div>
+</div>
 
+<!-- Menampilkan PDF dari CRM (mst_doc) -->
+<div *ngIf="pdfs.length > 0" class="row mt-4">
+  <div class="col-12">
+    <h5>Dokumen CRM (PDF)</h5>
+  </div>
+  <div *ngFor="let pdf of pdfs" class="col-md-4 mb-3">
+    <h6>{{ pdf.title }}</h6>
+    <iframe
+      [src]="pdf.src"
+      style="width: 100%; height: 400px;"
+      frameborder="0">
+    </iframe>
+  </div>
+</div>
+
+<!-- Supplier Audit & Visit -->
+<div class="container mt-4" *ngIf="supplierAudits.length > 0">
+  <div class="row">
+    <div class="col-12">
+      <h5>Supplier Audit & Visit</h5>
+    </div>
+    <!-- Tampilkan setiap audit sebagai card -->
+    <div *ngFor="let audit of supplierAudits" class="col-md-4 mb-3">
+      <div class="card h-100 text-center">
+        <div class="card-header bg-light">
+          <h6 class="mb-0 fw-bold">Review</h6>
+          <h4 class="mb-0 fw-bold">Supplier Audit &amp; Visit</h4>
+        </div>
+        <div class="card-body flex-grow-1 d-flex flex-column">
+          <!-- Gambar (evidence) -->
+          <div class="mb-3">
+            <img
+              *ngIf="audit.evidence"
+              [src]="baseUrl + '/uploads/' + audit.evidence"
+              alt="Evidence"
+              class="img-fluid"
+              style="height: 190px; width: auto; object-fit: cover;"
+            />
+            <img
+              *ngIf="!audit.evidence"
+              src="assets/no_picture.png"
+              alt="No Evidence"
+              class="img-fluid"
+              style="height: 190px; width: auto; object-fit: cover;"
+            />
+          </div>
+          <!-- Info Audit -->
+          <h5 class="mb-1">{{ audit.name_vendor }}</h5>
+          <p class="text-muted">{{ audit.city }}</p>
+          <p class="text-muted">
+            {{ audit.date_complete | date:'dd MMM yyyy HH:mm' }}
+          </p>
+          <button class="btn btn-outline-primary mt-auto" (click)="detailAudit(audit)">Detail</button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-
-    <!-- Menampilkan PDF dari CRM (mst_doc) -->
-    <div *ngIf="pdfs.length > 0" class="row mt-4">
-      <div class="col-12">
-        <h5>Dokumen CRM (PDF)</h5>
-      </div>
-      <div *ngFor="let pdf of pdfs" class="col-md-4 mb-3">
-        <h6>{{ pdf.title }}</h6>
-        <iframe
-          [src]="pdf.src"
-          style="width: 100%; height: 400px;"
-          frameborder="0">
-        </iframe>
-      </div>
-    </div>
-
-    <!-- Supplier Certifications Section -->
-    <div class="col-md-6">
-      <div class="row align-items-stretch">
-        <div *ngFor="let cert of certifications" class="col-md-3">
-          <div class="card h-100 d-flex flex-column">
-            <div class="card-header text-center">
-              <h6>{{ cert.title }}</h6>
-            </div>
-            <div class="card-body text-center flex-grow-1">
-              <img [src]="cert.image" alt="{{ cert.title }}" class="img-fluid" />
-              <p class="mt-2">Valid until {{ cert.validUntil | date }}</p>
-            </div>
-          </div>
+<!-- Supplier Certifications Section -->
+<div class="col-md-6">
+  <div class="row align-items-stretch">
+    <div *ngFor="let cert of certifications" class="col-md-3">
+      <div class="card h-100 d-flex flex-column">
+        <div class="card-header text-center">
+          <h6>{{ cert.title }}</h6>
         </div>
-      </div>
-    </div>
-
-
-  <!-- Additional Sections -->
-  <div class="container mt-4">
-    <div class="row align-items-stretch">
-      <div *ngFor="let visualDesign of visualDesigns" class="col-md-3">
-        <div class="card h-100">
-          <div class="card-header text-center">
-            <h6>Visual Design</h6>
-          </div>
-          <div class="card-body text-center">
-            <img [src]="visualDesign.image" alt="Visual Design" class="img-fluid" />
-          </div>
+        <div class="card-body text-center flex-grow-1">
+          <img [src]="cert.image" alt="{{ cert.title }}" class="img-fluid" />
+          <p class="mt-2">Valid until {{ cert.validUntil | date }}</p>
         </div>
       </div>
     </div>
   </div>
+</div>
 
+<!-- Additional Sections -->
+<div class="container mt-4">
+  <div class="row align-items-stretch">
+    <div *ngFor="let visualDesign of visualDesigns" class="col-md-3">
+      <div class="card h-100">
+        <div class="card-header text-center">
+          <h6>Visual Design</h6>
+        </div>
+        <div class="card-body text-center">
+          <img [src]="visualDesign.image" alt="Visual Design" class="img-fluid" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
