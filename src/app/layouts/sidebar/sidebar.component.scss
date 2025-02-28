@@ -32,10 +32,10 @@
     font-weight: 500 !important;
     font-size: 15px;
     .nav-icon {
-      background: linear-gradient(173deg, rgba(105,94,241,1) 0%, rgba(89,79,214,1) 100%);
+      background: linear-gradient(173deg, #3fcfa4 0%, #3fcfa4 100%);
       color: white;
       border-radius: 5px;
-      border: 1px solid #4e45cc;
+      border: 1px solid #3fcfa4;
     }
   }
   
@@ -51,10 +51,10 @@
   }
   
   .nav-link.active .nav-icon {
-    background: linear-gradient(173deg, rgba(105,94,241,1) 0%, rgba(89,79,214,1) 100%);
+    background: linear-gradient(173deg, #3fcfa4 0%, #3fcfa4 100%);
     color: white;
     border-radius: 5px;
-    border: 1px solid #4e45cc;
+    border: 1px solid #3fcfa4;
   }
   
   .nav-link.active {
