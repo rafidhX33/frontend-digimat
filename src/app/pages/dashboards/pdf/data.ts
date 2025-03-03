@@ -1,4 +1,4 @@
-import { ChartOptions } from './crm.model';
+import { ChartOptions } from './pdf.model';
 
 
 /**

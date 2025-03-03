@@ -3,11 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 // Component Pages
 import { AnalyticsComponent } from "./analytics/analytics.component";
-import { CrmComponent } from "./crm/crm.component";
+import { PdfComponent } from "./pdf/pdf.component";
 import { CryptoComponent } from "./crypto/crypto.component";
 import { ProjectsComponent } from "./projects/projects.component";
 import { NftComponent } from "./nft/nft.component";
 import { JobComponent } from './job/job.component';
+import { SupplierInfoComponent } from './supplier-info/supplier-info.component';
 
 const routes: Routes = [
   {
@@ -15,8 +16,8 @@ const routes: Routes = [
     component: AnalyticsComponent
   },
   {
-    path: "crm",
-    component: CrmComponent
+    path: "pdf",
+    component: PdfComponent
   },
   {
     path: "crypto",
@@ -33,6 +34,10 @@ const routes: Routes = [
   {
     path: "job",
     component: JobComponent
+  },
+  {
+    path: "supplier-info",
+    component: SupplierInfoComponent
   }
 ];
 

@@ -1,0 +1,49 @@
+<div class="container mt-4">
+  <h2>Upload Supplier Info</h2>
+  <form (submit)="onSubmitSupplierInfo($event)">
+    <!-- Dropdown Supplier (ng-select) -->
+    <div class="mb-3">
+      <label for="supplier" class="form-label">Supplier</label>
+      <ng-select
+        class="w-100"
+        [items]="suppliers"
+        bindLabel="name_vendor"
+        bindValue="kode_vendor"
+        placeholder="Pilih Supplier"
+        [(ngModel)]="supplier.kode_vendor"
+        name="supplier"
+        [searchable]="true"
+        required>
+      </ng-select>
+    </div>
+
+    <!-- Dropdown Status (ng-select) -->
+    <div class="mb-3">
+      <label for="status" class="form-label">Status</label>
+      <ng-select
+        class="w-100"
+        [items]="statusOptions"
+        bindLabel="label"
+        bindValue="value"
+        placeholder="Pilih Status"
+        [(ngModel)]="supplier.status"
+        name="status"
+        [searchable]="false"
+        required>
+      </ng-select>
+    </div>
+
+    <!-- File Upload untuk Logo -->
+    <div class="mb-3">
+      <label for="logo" class="form-label">Upload Logo</label>
+      <input
+        type="file"
+        id="logo"
+        class="form-control"
+        (change)="onFileSelected($event)"
+        accept="image/*">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>

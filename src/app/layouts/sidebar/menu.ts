@@ -1,5 +1,6 @@
 import { icon } from "leaflet";
 import { MenuItem } from "./menu.model";
+import { identifierName } from "@angular/compiler";
 
 export const MENU: MenuItem[] = [
   {
@@ -491,9 +492,15 @@ export const MENU: MenuItem[] = [
           {
             id: 57,
             label: "PDF",
-            link: "/crm",
+            link: "/pdf",
             parentId: 56,
           },
+          {
+            id: 58,
+            label: "Logo & status",
+            link: "/supplier-info",
+            parentId: 56,
+          }
           //     {
           //       id: 58,
           //       label: 'MENUITEMS.AUTHENTICATION.LIST.COVER',

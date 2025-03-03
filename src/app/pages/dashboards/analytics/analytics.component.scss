@@ -1,18 +1,92 @@
-/* Pastikan iframe PDF memiliki tampilan yang lebih proporsional */
-iframe {
-    width: 100%;
-    height: 500px;
-    border: none;
-  }
+// Variables for colors to make the SCSS more maintainable
+$primary-color: #007bff;
+$status-color: #17a2b8;
+$complaint-color: #dc3545;
+$score-color: #ffc107;
+$hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+// Main styles for cards and hover effects
+.card {
+  transition: all 0.3s ease;
   
-  /* Memastikan card PDF tetap memiliki tampilan yang baik */
-  .card.pdf-card {
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $hover-shadow;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// Card Header Styling
+.card-header {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+// Supplier Logo Card
+.supplier-logo {
+  background-color: $primary-color;
+  color: white;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+
+  img {
+    max-width: 100%;
     height: auto;
-    padding: 10px;
   }
-  
-  .card.pdf-card h6 {
-    text-align: center;
-    font-weight: bold;
+}
+
+// Status Card
+.status-card {
+  background-color: $status-color;
+  color: white;
+
+  &:hover {
+    background-color: darken($status-color, 10%);
   }
-  
+}
+
+// Supplier Score Card
+.score-card {
+  background-color: $score-color;
+  color: black;
+
+  &:hover {
+    background-color: darken($score-color, 10%);
+  }
+}
+
+// Complaint Card
+.complaint-card {
+  background-color: $complaint-color;
+  color: white;
+
+  &:hover {
+    background-color: darken($complaint-color, 10%);
+  }
+}
+
+// Hover Effect for text and background color changes
+.hover-color:hover {
+  background-color: $primary-color;
+}
+
+.hover-text:hover {
+  color: white;
+}
+
+// Material and Supplier Dropdown Styles
+.form-select {
+  border-radius: 0.375rem;
+  box-shadow: none;
+}
+
+// Flex container for centering content
+

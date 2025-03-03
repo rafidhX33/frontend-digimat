@@ -18,11 +18,11 @@ interface Material {
 }
 
 @Component({
-  selector: 'app-crm',
-  templateUrl: './crm.component.html',
-  styleUrls: ['./crm.component.scss']
+  selector: 'app-pdf',
+  templateUrl: './pdf.component.html',
+  styleUrls: ['./pdf.component.scss']
 })
-export class CrmComponent implements OnInit {
+export class PdfComponent implements OnInit {
   // Data untuk dropdown
   materials: Material[] = [];
   filteredSuppliers: Supplier[] = [];

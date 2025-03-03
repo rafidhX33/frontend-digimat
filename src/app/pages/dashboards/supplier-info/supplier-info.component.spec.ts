@@ -1,20 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CrmComponent } from './crm.component';
+import { SupplierInfoComponent } from './supplier-info.component';
 
-describe('CrmComponent', () => {
-  let component: CrmComponent;
-  let fixture: ComponentFixture<CrmComponent>;
+describe('SupplierInfoComponent', () => {
+  let component: SupplierInfoComponent;
+  let fixture: ComponentFixture<SupplierInfoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CrmComponent ]
+      declarations: [ SupplierInfoComponent ]
     })
     .compileComponents();
-  });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CrmComponent);
+    fixture = TestBed.createComponent(SupplierInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

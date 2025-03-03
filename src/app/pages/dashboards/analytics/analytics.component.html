@@ -1,8 +1,9 @@
 <app-breadcrumbs title="Packaging" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
 
 <div class="container mt-4">
+  <!-- Material & Supplier Selection Card (Setengah Halaman) -->
   <div class="row align-items-stretch">
-    <div class="col-md-9">
+    <div class="col-md-6">
       <div class="card h-100 d-flex flex-column">
         <div class="card-header text-center">
           <h5>Material & Supplier Selection</h5>
@@ -63,7 +64,7 @@
                     [src]="selectedSupplier.image ? selectedSupplier.image : 'assets/default-logo.png'"
                     alt="Supplier Logo"
                     class="card-img-top"
-                    style="height: 80px; object-fit: contain"
+                    style="height: 80px; object-fit: contain;"
                   />
                 </div>
               </div>
@@ -84,7 +85,7 @@
               <div class="card text-center bg-warning text-dark h-100">
                 <div class="card-body">
                   <h6 class="card-title">Supplier Score</h6>
-                  <p class="card-text fw-bold">
+                  <p class="card-text text-white fw-bold">
                     {{ selectedSupplier.supplierScore ? selectedSupplier.supplierScore : '-' }}
                   </p>
                 </div>
@@ -103,9 +104,9 @@
               </div>
             </div>
           </div>
-        </div>
+        </div><!-- end card-body -->
       </div><!-- end card -->
-    </div><!-- end col-md-9 -->
+    </div><!-- end col-md-6 -->
   </div>
 </div>
 
@@ -116,11 +117,20 @@
   </div>
   <div *ngFor="let pdf of pdfs" class="col-md-4 mb-3">
     <h6>{{ pdf.title }}</h6>
-    <iframe
-      [src]="pdf.src"
-      style="width: 100%; height: 400px;"
-      frameborder="0">
-    </iframe>
+    <div class="card">
+      <div class="card-body p-0">
+        <!-- Menampilkan PDF secara ringkas di iframe kecil -->
+        <iframe
+          [src]="pdf.src"
+          style="width: 100%; height: 250px;"
+          frameborder="0">
+        </iframe>
+      </div>
+      <div class="card-footer text-center">
+        <!-- Tombol Preview PDF -->
+        <button class="btn btn-sm btn-outline-primary" (click)="previewPDF(pdf)">Preview</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -142,17 +152,17 @@
           <div class="mb-3">
             <img
               *ngIf="audit.evidence"
-              [src]="baseUrl + '/uploads/' + audit.evidence"
+              [src]="'https://myapps.aio.co.id/track/upload/' + audit.evidence"
               alt="Evidence"
               class="img-fluid"
               style="height: 190px; width: auto; object-fit: cover;"
             />
             <img
               *ngIf="!audit.evidence"
-              src="assets/no_picture.png"
+              class="image-preview center-image"
+              [src]="'assets/images/no_picture.png'"
+              style="height: 190px; width: auto"
               alt="No Evidence"
-              class="img-fluid"
-              style="height: 190px; width: auto; object-fit: cover;"
             />
           </div>
           <!-- Info Audit -->
