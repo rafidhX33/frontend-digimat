@@ -32,6 +32,11 @@ interface AuditData {
   improvment: string | null;
 }
 
+interface Abnormality {
+  abnormal: string;
+  total_case: number;
+}
+
 @Component({
   selector: 'app-crm',
   templateUrl: './analytics.component.html',
@@ -49,7 +54,13 @@ export class AnalyticsComponent implements OnInit {
   visualDesigns: any[] = [];
   materialFlowProcess: any[] = [];
   supplierQualityDevice: any[] = [];
-  supplierAudits: AuditData[] = []; // Data Audit Supplier & Visit
+  supplierAudits: AuditData[] = [];
+
+  // Data Abnormality
+  supplierAbnormalities: Abnormality[] = [];
+
+  // Range filter: 'all' | '1m' | '6m' | '1y'
+  selectedRange: 'all' | '1m' | '6m' | '1y' = 'all';
 
   private apiUrl = 'http://localhost:5000';
   public baseUrl: string = 'http://localhost:5000';
@@ -64,13 +75,21 @@ export class AnalyticsComponent implements OnInit {
     this.loadMaterials();
   }
 
-  /** Load daftar material dari API */
+  // Mengubah range filter
+  setRange(range: 'all' | '1m' | '6m' | '1y'): void {
+    this.selectedRange = range;
+    // Jika supplier sudah dipilih, reload data abnormalities
+    if (this.selectedSupplier) {
+      this.loadAbnormalities(this.selectedSupplier.kode_vendor, this.selectedRange);
+    }
+  }
+
+  // Memuat daftar material
   loadMaterials(): void {
     this.http.get<any>(`${this.apiUrl}/api/materials`).subscribe(
       response => {
         if (response.success && Array.isArray(response.data)) {
           this.materials = response.data;
-          console.log("Materials loaded:", this.materials);
         } else {
           console.error("Invalid data format for materials:", response);
         }
@@ -82,20 +101,15 @@ export class AnalyticsComponent implements OnInit {
     );
   }
 
-  /** Update daftar supplier berdasarkan material yang dipilih */
+  // Ketika material dipilih
   updateSuppliers(): void {
-    if (!this.selectedMaterial) {
-      console.warn('Selected material kosong');
-      return;
-    }
+    if (!this.selectedMaterial) return;
     const url = `${this.apiUrl}/api/suppliers/material/${this.selectedMaterial}`;
-    console.log("Fetching suppliers from:", url);
     this.http.get<any>(url).subscribe(
       response => {
         if (response.success && Array.isArray(response.data)) {
           this.filteredSuppliers = response.data;
-          this.selectedSupplier = null; // Reset supplier jika material berubah
-          console.log("Suppliers loaded:", this.filteredSuppliers);
+          this.selectedSupplier = null;
         } else {
           console.error("Invalid supplier data format:", response);
         }
@@ -108,29 +122,31 @@ export class AnalyticsComponent implements OnInit {
     );
   }
 
-  /** Update info supplier ketika supplier dipilih */
+  // Ketika supplier dipilih
   updateSupplierInfo(): void {
     if (!this.selectedSupplier || !this.selectedMaterial) return;
-    console.log("Selected supplier:", this.selectedSupplier);
 
-    // Set default data di selectedSupplier
+    // Set default data
     this.selectedSupplier = {
       ...this.selectedSupplier,
       supplierScore: "-",
       complaintCount: 0
     };
 
-    // Load data Supplier (Grade, Complaint Count, dsb.)
+    // Load data Supplier (Grade, Complaint, dsb.)
     this.loadSupplierData(this.selectedSupplier.kode_vendor);
 
-    // Load Dokumen (PDF) Supplier
+    // Load Dokumen (PDF)
     this.loadSupplierDocs(this.selectedSupplier.kode_vendor, this.selectedMaterial);
 
-    // Load Audit Supplier & Visit
+    // Load Audit
     this.loadSupplierAudit(this.selectedSupplier.kode_vendor);
+
+    // Load Abnormalities (menggunakan filter 'selectedRange')
+    this.loadAbnormalities(this.selectedSupplier.kode_vendor, this.selectedRange);
   }
 
-  /** Mengambil data Supplier (Grade, Complaint Count, Logo, Status) */
+  // Memuat data Supplier (Grade, Complaint, Logo, Status)
   loadSupplierData(kode_vendor: string): void {
     const start = "2024-01-01";
     const end = "2024-12-31";
@@ -139,7 +155,7 @@ export class AnalyticsComponent implements OnInit {
     const urlSupplierDetails = `${this.apiUrl}/api/suppliers/details?kode_vendor=${kode_vendor}`;
     const urlSupplierInfo = `${this.apiUrl}/api/supplier-info/${kode_vendor}`;
 
-    // Fetch Supplier Grade
+    // Grade
     this.http.get<any>(urlGrade).subscribe(
       response => {
         if (response.success && response.data.length > 0) {
@@ -163,7 +179,7 @@ export class AnalyticsComponent implements OnInit {
       }
     );
 
-    // Fetch Complaint Count
+    // Complaint
     this.http.get<any>(urlComplaint).subscribe(
       response => {
         if (response.success) {
@@ -187,11 +203,10 @@ export class AnalyticsComponent implements OnInit {
       }
     );
 
-    // Fetch Supplier Details (Logo & Status) dari endpoint details
+    // Supplier Details
     this.http.get<any>(urlSupplierDetails).subscribe(
       response => {
         if (response.success && response.data) {
-          // Jika data detail ada, update image dan status
           this.selectedSupplier = {
             ...this.selectedSupplier!,
             image: response.data.image || "assets/default-logo.png",
@@ -204,14 +219,14 @@ export class AnalyticsComponent implements OnInit {
       }
     );
 
-    // Fetch Supplier Info dari endpoint supplier-info (untuk logo dan status)
+    // Supplier Info (logo, status)
     this.http.get<any>(urlSupplierInfo).subscribe(
       response => {
         if (response.success && response.data) {
-          // Pastikan untuk mengakses file logo dari folder uploads
+          const logoUrl = response.data.logo ? `${this.baseUrl}/uploads/${response.data.logo}` : "assets/default-logo.png";
           this.selectedSupplier = {
             ...this.selectedSupplier!,
-            image: response.data.logo ? `${this.baseUrl}/uploads/${response.data.logo}` : "assets/default-logo.png",
+            image: logoUrl,
             status: response.data.status || "Unknown"
           };
         }
@@ -222,10 +237,9 @@ export class AnalyticsComponent implements OnInit {
     );
   }
 
-  /** Memuat dokumen PDF dari endpoint /api/doc dengan filter berdasarkan kode_vendor dan material_code */
+  // Memuat dokumen PDF
   loadSupplierDocs(kode_vendor: string, material_code: string): void {
     const url = `${this.apiUrl}/api/doc?supplier=${kode_vendor}`;
-    console.log("Fetching docs from:", url);
     this.http.get<any>(url).subscribe(
       response => {
         let docs: any[] = [];
@@ -234,10 +248,8 @@ export class AnalyticsComponent implements OnInit {
         } else if (response.success && Array.isArray(response.data)) {
           docs = response.data;
         } else {
-          console.error("Invalid doc data format:", response);
           return;
         }
-        // Filter dokumen berdasarkan kombinasi kode_vendor dan material_code
         const filteredDocs = docs.filter(doc =>
           doc.kode_vendor === kode_vendor && doc.material_code === material_code
         );
@@ -268,7 +280,6 @@ export class AnalyticsComponent implements OnInit {
             });
           }
         });
-        console.log("Filtered docs:", this.pdfs);
       },
       error => {
         console.error("Error loading doc data:", error);
@@ -276,18 +287,15 @@ export class AnalyticsComponent implements OnInit {
     );
   }
 
-  /** Memuat data Supplier Audit (Supplier Audit & Visit) */
+  // Memuat data Supplier Audit
   loadSupplierAudit(kode_vendor: string): void {
     const url = `${this.apiUrl}/api/supplier-audit/${kode_vendor}`;
-    console.log("Fetching audits from:", url);
     this.http.get<any>(url).subscribe(
       response => {
         if (response.success && Array.isArray(response.data)) {
           this.supplierAudits = response.data;
-          console.log("Supplier audits loaded:", this.supplierAudits);
         } else {
           this.supplierAudits = [];
-          console.warn("No audit data found or invalid format:", response);
         }
       },
       error => {
@@ -297,7 +305,29 @@ export class AnalyticsComponent implements OnInit {
     );
   }
 
-  /** Method untuk mempreview PDF dalam modal SweetAlert2 */
+  // Memuat data Abnormalities dengan filter range
+  loadAbnormalities(kode_vendor: string, range: string): void {
+    // GET /api/abnormalities/:kode_vendor?range=all|1m|6m|1y
+    const url = `${this.apiUrl}/api/abnormalities/${kode_vendor}?range=${range}`;
+    this.http.get<any>(url).subscribe(
+      response => {
+        if (response.success && Array.isArray(response.data)) {
+          this.supplierAbnormalities = response.data.map((item: any) => ({
+            abnormal: item.abnormal,
+            total_case: item.total_case
+          }));
+        } else {
+          this.supplierAbnormalities = [];
+        }
+      },
+      error => {
+        console.error('Error loading supplier abnormalities:', error);
+        this.supplierAbnormalities = [];
+      }
+    );
+  }
+
+  // Preview PDF
   previewPDF(pdf: { src: SafeResourceUrl, title: string }): void {
     Swal.fire({
       title: pdf.title,
@@ -308,7 +338,7 @@ export class AnalyticsComponent implements OnInit {
     });
   }
 
-  /** Contoh method detailAudit() untuk menampilkan detail audit */
+  // Detail Audit
   detailAudit(audit: any): void {
     Swal.fire({
       title: 'Audit Detail',

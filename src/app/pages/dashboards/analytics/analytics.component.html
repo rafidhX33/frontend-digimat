@@ -85,7 +85,7 @@
               <div class="card text-center bg-warning text-dark h-100">
                 <div class="card-body">
                   <h6 class="card-title">Supplier Score</h6>
-                  <p class="card-text text-white fw-bold">
+                  <p class="card-text fw-bold">
                     {{ selectedSupplier.supplierScore ? selectedSupplier.supplierScore : '-' }}
                   </p>
                 </div>
@@ -178,35 +178,47 @@
   </div>
 </div>
 
-<!-- Supplier Certifications Section -->
-<div class="col-md-6">
-  <div class="row align-items-stretch">
-    <div *ngFor="let cert of certifications" class="col-md-3">
-      <div class="card h-100 d-flex flex-column">
-        <div class="card-header text-center">
-          <h6>{{ cert.title }}</h6>
-        </div>
-        <div class="card-body text-center flex-grow-1">
-          <img [src]="cert.image" alt="{{ cert.title }}" class="img-fluid" />
-          <p class="mt-2">Valid until {{ cert.validUntil | date }}</p>
+<!-- Abnormality Historical Section -->
+<div class="container mt-4" *ngIf="supplierAbnormalities.length > 0">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h5 class="mb-0">Abnormality Historical</h5>
+        <!-- Filter Buttons -->
+        <div>
+          <button class="btn btn-sm" 
+                  [ngClass]="{'btn-primary': selectedRange === 'all', 'btn-outline-primary': selectedRange !== 'all'}"
+                  (click)="setRange('all')">ALL</button>
+          <button class="btn btn-sm" 
+                  [ngClass]="{'btn-primary': selectedRange === '1m', 'btn-outline-primary': selectedRange !== '1m'}"
+                  (click)="setRange('1m')">1M</button>
+          <button class="btn btn-sm" 
+                  [ngClass]="{'btn-primary': selectedRange === '6m', 'btn-outline-primary': selectedRange !== '6m'}"
+                  (click)="setRange('6m')">6M</button>
+          <button class="btn btn-sm" 
+                  [ngClass]="{'btn-primary': selectedRange === '1y', 'btn-outline-primary': selectedRange !== '1y'}"
+                  (click)="setRange('1y')">1Y</button>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Additional Sections -->
-<div class="container mt-4">
-  <div class="row align-items-stretch">
-    <div *ngFor="let visualDesign of visualDesigns" class="col-md-3">
-      <div class="card h-100">
-        <div class="card-header text-center">
-          <h6>Visual Design</h6>
-        </div>
-        <div class="card-body text-center">
-          <img [src]="visualDesign.image" alt="Visual Design" class="img-fluid" />
-        </div>
-      </div>
+  <div class="row mt-2">
+    <div class="col-12">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Type of Abnormality</th>
+            <th>Total Case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ab of supplierAbnormalities">
+            <td>{{ ab.abnormal }}</td>
+            <td>{{ ab.total_case }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

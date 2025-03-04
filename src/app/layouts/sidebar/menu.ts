@@ -486,12 +486,12 @@ export const MENU: MenuItem[] = [
     subItems: [
       {
         id: 56,
-        label: "Document",
+        label: "Upload",
         parentId: 49,
         subItems: [
           {
             id: 57,
-            label: "PDF",
+            label: "Document",
             link: "/pdf",
             parentId: 56,
           },

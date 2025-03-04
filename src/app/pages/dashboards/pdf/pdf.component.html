@@ -1,5 +1,5 @@
 <div class="container mt-4">
-  <h2>Upload Dokumen</h2>
+  <h2>Document Upload</h2>
   <form (submit)="onSubmit(); $event.preventDefault()">
     <!-- Dropdown Material Selection menggunakan ng-select -->
     <div class="mb-3">
@@ -39,7 +39,7 @@
 
     <!-- File Upload untuk Quality Statement -->
     <div class="mb-3">
-      <label for="doc_qs" class="form-label">Upload Dokumen (Quality Statement)</label>
+      <label for="doc_qs" class="form-label">Document Upload (Quality Statement)</label>
       <input
         type="file"
         id="doc_qs"
@@ -51,7 +51,7 @@
 
     <!-- File Upload untuk Supplier Statement -->
     <div class="mb-3">
-      <label for="doc_ss" class="form-label">Upload Dokumen (Supplier Statement)</label>
+      <label for="doc_ss" class="form-label">Document Upload (Supplier Statement)</label>
       <input
         type="file"
         id="doc_ss"
@@ -63,7 +63,7 @@
 
     <!-- File Upload untuk AIOS -->
     <div class="mb-3">
-      <label for="doc_aios" class="form-label">Upload Dokumen (AIOS)</label>
+      <label for="doc_aios" class="form-label">Document Upload (AIOS)</label>
       <input
         type="file"
         id="doc_aios"
@@ -78,10 +78,3 @@
 
   <hr />
 
-  <h3>Daftar Dokumen</h3>
-  <ul>
-    <li *ngFor="let doc of documents">
-      ID: {{ doc.id }} | Kode Vendor: {{ doc.kode_vendor }} | Material Code: {{ doc.material_code }} | File QS: {{ doc.doc_name_qs }}
-    </li>
-  </ul>
-</div>
