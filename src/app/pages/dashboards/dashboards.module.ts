@@ -7,7 +7,7 @@ import { FeatherModule } from 'angular-feather';
 import { allIcons } from 'angular-feather/icons';
 import { CountToModule } from 'angular-count-to';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { NgbDropdownModule, NgbNavModule, NgbTypeaheadModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbNavModule, NgbTypeaheadModule, NgbPaginationModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SimplebarAngularModule } from 'simplebar-angular';
 // Apex Chart Package
 import { NgApexchartsModule } from 'ng-apexcharts';
@@ -62,7 +62,8 @@ import { SupplierInfoComponent } from './supplier-info/supplier-info.component';
     NgbPaginationModule,
     FormsModule,
     ReactiveFormsModule,
-    NgSelectModule
+    NgSelectModule,
+    NgbModule
   ]
 })
 export class DashboardsModule { }

@@ -1,224 +1,503 @@
-<app-breadcrumbs title="Packaging" [breadcrumbItems]="breadCrumbItems"></app-breadcrumbs>
+<app-breadcrumbs
+  title="Packaging"
+  [breadcrumbItems]="breadCrumbItems"
+></app-breadcrumbs>
 
 <div class="container mt-4">
-  <!-- Material & Supplier Selection Card (Setengah Halaman) -->
-  <div class="row align-items-stretch">
-    <div class="col-md-6">
-      <div class="card h-100 d-flex flex-column">
+  <!-- Material & Supplier Selection Card (1/2 halaman) -->
+  <div class="container mt-4">
+    <div class="row">
+      <!-- Bagian kiri setengah halaman -->
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-header text-center">
+            <h5>Material &amp; Supplier Selection</h5>
+          </div>
+          <div class="card-body">
+            <!-- Pilihan Material -->
+            <div class="row align-items-center mb-3">
+              <div class="col-auto" style="min-width: 100px">
+                <label class="form-label fw-bold mb-0">Material</label>
+              </div>
+              <div class="col-auto" style="min-width: 250px">
+                <ng-select
+                  class="w-100"
+                  [items]="materials"
+                  bindLabel="nama_material"
+                  bindValue="material_code"
+                  placeholder="Pilih Material"
+                  [(ngModel)]="selectedMaterial"
+                  name="material"
+                  (change)="updateSuppliers()"
+                  [searchable]="true"
+                  required
+                >
+                </ng-select>
+              </div>
+            </div>
+
+            <!-- Pilihan Supplier -->
+            <div class="row align-items-center mb-3">
+              <div class="col-auto" style="min-width: 100px">
+                <label class="form-label fw-bold mb-0">Supplier</label>
+              </div>
+              <div class="col-auto" style="min-width: 250px">
+                <ng-select
+                  class="w-100"
+                  [items]="filteredSuppliers"
+                  bindLabel="name_vendor"
+                  placeholder="Pilih Supplier"
+                  [(ngModel)]="selectedSupplier"
+                  name="supplier"
+                  (change)="updateSupplierInfo()"
+                  [searchable]="true"
+                  required
+                >
+                  <ng-template ng-option-tmp let-item="item">
+                    {{ item.name_vendor }} ({{ item.kode_vendor }})
+                  </ng-template>
+                </ng-select>
+              </div>
+            </div>
+
+            <!-- Jika supplier sudah dipilih -->
+            <div *ngIf="selectedSupplier; else noSupplierSelected">
+              <div class="row text-center">
+                <!-- Kotak 1: Logo -->
+                <div class="col-md-3 mb-2 d-flex justify-content-center">
+                  <div
+                    class="d-flex flex-column align-items-center justify-content-center text-white"
+                    style="
+                      width: 150px;
+                      height: 150px;
+                      background-color: #17a2b8;
+                    "
+                  >
+                    <img
+                      [src]="
+                        selectedSupplier.image
+                          ? selectedSupplier.image
+                          : 'assets/default-logo.png'
+                      "
+                      alt="Supplier Logo"
+                      style="height: 60px; object-fit: contain"
+                    />
+                    <small class="mt-1">Logo</small>
+                  </div>
+                </div>
+                <!-- Kotak 2: Status -->
+                <div class="col-md-3 mb-2 d-flex justify-content-center">
+                  <div
+                    class="d-flex flex-column align-items-center justify-content-center text-white"
+                    style="
+                      width: 150px;
+                      height: 150px;
+                      background-color: #28a745;
+                    "
+                  >
+                    <h6 class="mb-1">Status</h6>
+                    <p class="fw-bold mb-0">
+                      {{
+                        selectedSupplier.status
+                          ? selectedSupplier.status
+                          : "Unknown"
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <!-- Kotak 3: Score -->
+                <div class="col-md-3 mb-2 d-flex justify-content-center">
+                  <div
+                    class="d-flex flex-column align-items-center justify-content-center"
+                    style="
+                      width: 150px;
+                      height: 150px;
+                      background-color: #ffc107;
+                      color: #000;
+                    "
+                  >
+                    <h6 class="mb-1">Score</h6>
+                    <p class="fw-bold mb-0">
+                      {{
+                        selectedSupplier.supplierScore
+                          ? selectedSupplier.supplierScore
+                          : "-"
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <!-- Kotak 4: Complaint -->
+                <div class="col-md-3 mb-2 d-flex justify-content-center">
+                  <div
+                    class="d-flex flex-column align-items-center justify-content-center text-white"
+                    style="
+                      width: 150px;
+                      height: 150px;
+                      background-color: #dc3545;
+                    "
+                  >
+                    <h6 class="mb-1">Complaint</h6>
+                    <p class="fw-bold mb-0">
+                      {{
+                        selectedSupplier.complaintCount !== undefined
+                          ? selectedSupplier.complaintCount
+                          : 0
+                      }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-template #noSupplierSelected>
+              <div class="alert alert-info mt-3" style="max-width: 250px">
+                <small>Supplier belum dipilih.</small>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bagian kanan (setengah halaman sisanya) -->
+      <div class="col-md-6">
+        <!-- Konten lain di sebelah kanan (1/2 halaman) -->
+        <p class="text-muted">Untuk Tampilan Status Halal</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Document Card (Full width) -->
+  <div class="card mb-4">
+    <div class="card-header text-center">
+      <h5>Dokumen</h5>
+    </div>
+    <div class="card-body">
+      <div class="row" *ngIf="pdfs.length > 0; else noPdfData">
+        <div *ngFor="let pdf of pdfs" class="col-md-4 mb-3">
+          <h6>{{ pdf.title }}</h6>
+          <div class="border p-2">
+            <iframe
+              [src]="pdf.src"
+              style="width: 100%; height: 250px"
+              frameborder="0"
+            ></iframe>
+            <div class="text-center mt-2">
+              <button class="btn btn-sm btn-primary" (click)="previewPDF(pdf)">
+                Preview
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noPdfData>
+        <div class="alert alert-info p-2" style="max-width: 300px">
+          <small>Tidak ada dokumen</small>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Row untuk Supplier Audit, Abnormality Historical, dan Visual Design -->
+  <div class="row">
+    <!-- Supplier Audit & Visit Card (1/4 halaman) -->
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
         <div class="card-header text-center">
-          <h5>Material & Supplier Selection</h5>
+          <h5>Supplier Audit &amp; Visit</h5>
         </div>
-        <div class="card-body flex-grow-1">
-          <!-- Material Selection -->
-          <div class="row d-flex align-items-center mb-3">
-            <div class="col-auto" style="min-width: 200px;">
-              <h6 class="mb-0">Material</h6>
-            </div>
-            <div class="col-auto" style="min-width: 250px;">
-              <ng-select
-                class="w-100"
-                [items]="materials"
-                bindLabel="nama_material"
-                bindValue="material_code"
-                placeholder="Pilih Material"
-                [(ngModel)]="selectedMaterial"
-                name="material"
-                (change)="updateSuppliers()"
-                [searchable]="true"
-                required>
-              </ng-select>
-            </div>
-          </div>
-
-          <!-- Supplier Selection -->
-          <div class="row d-flex align-items-center mb-3">
-            <div class="col-auto" style="min-width: 200px;">
-              <h6 class="mb-0">Supplier</h6>
-            </div>
-            <div class="col-auto" style="min-width: 250px;">
-              <ng-select
-                class="w-100"
-                id="supplier-select"
-                [items]="filteredSuppliers"
-                bindLabel="name_vendor"
-                placeholder="Pilih Supplier"
-                [(ngModel)]="selectedSupplier"
-                name="supplier"
-                (change)="updateSupplierInfo()"
-                [searchable]="true"
-                required>
-                <ng-template ng-option-tmp let-item="item">
-                  {{ item.name_vendor }} ({{ item.kode_vendor }})
-                </ng-template>
-              </ng-select>
-            </div>
-          </div>
-
-          <!-- Supplier Info: Logo, Status, Supplier Score, Complaint Count -->
-          <div *ngIf="selectedSupplier" class="row mt-3">
-            <!-- Logo -->
-            <div class="col-md-3">
-              <div class="card text-center bg-primary text-white h-100">
-                <div class="card-body">
+        <div class="card-body p-0">
+          <ngb-carousel
+            *ngIf="supplierAudits.length > 0"
+            [showNavigationArrows]="true"
+            [showNavigationIndicators]="true"
+          >
+            <ng-template
+              ngbSlide
+              *ngFor="let audit of supplierAudits; let i = index"
+              id="audit-slide-{{ i }}"
+            >
+              <div class="p-3 border">
+                <div class="mb-2 text-center">
                   <img
-                    [src]="selectedSupplier.image ? selectedSupplier.image : 'assets/default-logo.png'"
-                    alt="Supplier Logo"
-                    class="card-img-top"
-                    style="height: 80px; object-fit: contain;"
+                    *ngIf="audit.evidence; else noAuditImg"
+                    [src]="
+                      'https://myapps.aio.co.id/track/upload/' + audit.evidence
+                    "
+                    alt="Evidence"
+                    class="img-fluid"
+                    style="height: 150px; width: 100%; object-fit: cover"
                   />
+                  <ng-template #noAuditImg>
+                    <img
+                      src="assets/images/no_picture.png"
+                      class="img-fluid"
+                      style="height: 150px; width: 100%; object-fit: cover"
+                      alt="No Evidence"
+                    />
+                  </ng-template>
+                </div>
+                <h6 class="mb-1 text-center">{{ audit.city }}</h6>
+                <p
+                  class="text-muted text-center mb-2"
+                  style="font-size: 0.8rem"
+                >
+                  {{ audit.date_complete | date : "dd MMM yyyy" }}
+                </p>
+                <div class="text-center">
+                  <button
+                    class="btn btn-sm btn-primary"
+                    (click)="detailAudit(audit)"
+                  >
+                    Detail
+                  </button>
                 </div>
               </div>
-            </div>
+            </ng-template>
+          </ngb-carousel>
+          <div
+            *ngIf="supplierAudits.length === 0"
+            class="alert alert-info p-2 text-center"
+          >
+            <small>Tidak ada data audit.</small>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            <!-- Status -->
-            <div class="col-md-3">
-              <div class="card text-center bg-success text-white h-100">
-                <div class="card-body">
-                  <h6 class="card-title">Status</h6>
-                  <p class="card-text fw-bold">{{ selectedSupplier.status ? selectedSupplier.status : 'Unknown' }}</p>
-                </div>
-              </div>
+    <!-- Abnormality Historical Card (1/4 halaman) dengan paginasi -->
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <h5 class="mb-0">Abnormality Historical</h5>
+          <div>
+            <button
+              class="btn btn-sm me-1"
+              [ngClass]="{
+                'btn-primary': selectedRange === 'all',
+                'btn-outline-primary': selectedRange !== 'all'
+              }"
+              (click)="setRange('all')"
+            >
+              ALL
+            </button>
+            <button
+              class="btn btn-sm me-1"
+              [ngClass]="{
+                'btn-primary': selectedRange === '1m',
+                'btn-outline-primary': selectedRange !== '1m'
+              }"
+              (click)="setRange('1m')"
+            >
+              1M
+            </button>
+            <button
+              class="btn btn-sm me-1"
+              [ngClass]="{
+                'btn-primary': selectedRange === '6m',
+                'btn-outline-primary': selectedRange !== '6m'
+              }"
+              (click)="setRange('6m')"
+            >
+              6M
+            </button>
+            <button
+              class="btn btn-sm"
+              [ngClass]="{
+                'btn-primary': selectedRange === '1y',
+                'btn-outline-primary': selectedRange !== '1y'
+              }"
+              (click)="setRange('1y')"
+            >
+              1Y
+            </button>
+          </div>
+        </div>
+        <div class="card-body p-2">
+          <div *ngIf="supplierAbnormalities.length > 0; else noAbnormalityData">
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm mb-0">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Total</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ab of paginatedAbnormalities">
+                    <td>{{ ab.abnormal }}</td>
+                    <td>{{ ab.total_case }}</td>
+                    <td>{{ ab.date | date : "dd MMM yyyy" }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-
-            <!-- Supplier Score (Grade) -->
-            <div class="col-md-3">
-              <div class="card text-center bg-warning text-dark h-100">
-                <div class="card-body">
-                  <h6 class="card-title">Supplier Score</h6>
-                  <p class="card-text fw-bold">
-                    {{ selectedSupplier.supplierScore ? selectedSupplier.supplierScore : '-' }}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Complaint Count -->
-            <div class="col-md-3">
-              <div class="card text-center bg-danger text-white h-100">
-                <div class="card-body">
-                  <h6 class="card-title">Complaint</h6>
-                  <p class="card-text fw-bold">
-                    {{ selectedSupplier.complaintCount !== undefined ? selectedSupplier.complaintCount : 0 }}
-                  </p>
-                </div>
-              </div>
+            <div class="d-flex justify-content-end align-items-center mt-2">
+              <button
+                class="btn btn-sm btn-primary me-2"
+                (click)="prevAbnormalityPage()"
+                [disabled]="abnormalityPage === 1"
+              >
+                Prev
+              </button>
+              <span
+                >Page {{ abnormalityPage }} of {{ totalAbnormalityPages }}</span
+              >
+              <button
+                class="btn btn-sm btn-primary ms-2"
+                (click)="nextAbnormalityPage()"
+                [disabled]="abnormalityPage >= totalAbnormalityPages"
+              >
+                Next
+              </button>
             </div>
           </div>
-        </div><!-- end card-body -->
-      </div><!-- end card -->
-    </div><!-- end col-md-6 -->
-  </div>
-</div>
-
-<!-- Menampilkan PDF dari CRM (mst_doc) -->
-<div *ngIf="pdfs.length > 0" class="row mt-4">
-  <div class="col-12">
-    <h5>Dokumen CRM (PDF)</h5>
-  </div>
-  <div *ngFor="let pdf of pdfs" class="col-md-4 mb-3">
-    <h6>{{ pdf.title }}</h6>
-    <div class="card">
-      <div class="card-body p-0">
-        <!-- Menampilkan PDF secara ringkas di iframe kecil -->
-        <iframe
-          [src]="pdf.src"
-          style="width: 100%; height: 250px;"
-          frameborder="0">
-        </iframe>
-      </div>
-      <div class="card-footer text-center">
-        <!-- Tombol Preview PDF -->
-        <button class="btn btn-sm btn-outline-primary" (click)="previewPDF(pdf)">Preview</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Supplier Audit & Visit -->
-<div class="container mt-4" *ngIf="supplierAudits.length > 0">
-  <div class="row">
-    <div class="col-12">
-      <h5>Supplier Audit & Visit</h5>
-    </div>
-    <!-- Tampilkan setiap audit sebagai card -->
-    <div *ngFor="let audit of supplierAudits" class="col-md-4 mb-3">
-      <div class="card h-100 text-center">
-        <div class="card-header bg-light">
-          <h6 class="mb-0 fw-bold">Review</h6>
-          <h4 class="mb-0 fw-bold">Supplier Audit &amp; Visit</h4>
+          <ng-template #noAbnormalityData>
+            <div
+              class="alert alert-info p-2 text-center"
+              style="max-width: 200px"
+            >
+              <small>Tidak ada data abnormality.</small>
+            </div>
+          </ng-template>
         </div>
-        <div class="card-body flex-grow-1 d-flex flex-column">
-          <!-- Gambar (evidence) -->
-          <div class="mb-3">
-            <img
-              *ngIf="audit.evidence"
-              [src]="'https://myapps.aio.co.id/track/upload/' + audit.evidence"
-              alt="Evidence"
-              class="img-fluid"
-              style="height: 190px; width: auto; object-fit: cover;"
-            />
-            <img
-              *ngIf="!audit.evidence"
-              class="image-preview center-image"
-              [src]="'assets/images/no_picture.png'"
-              style="height: 190px; width: auto"
-              alt="No Evidence"
-            />
+      </div>
+    </div>
+
+    <!-- Visual Design Card (1/4 halaman) -->
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        <div class="card-header text-center">
+          <h5>Visual Design</h5>
+        </div>
+        <div class="card-body text-center">
+          <div *ngIf="visualDesigns.length > 0; else noVisualData">
+            <div *ngFor="let visual of visualDesigns" class="mb-2">
+              <img
+                [src]="visual.image"
+                alt="Visual"
+                class="img-fluid"
+                style="max-height: 150px; object-fit: contain"
+              />
+            </div>
           </div>
-          <!-- Info Audit -->
-          <h5 class="mb-1">{{ audit.name_vendor }}</h5>
-          <p class="text-muted">{{ audit.city }}</p>
-          <p class="text-muted">
-            {{ audit.date_complete | date:'dd MMM yyyy HH:mm' }}
-          </p>
-          <button class="btn btn-outline-primary mt-auto" (click)="detailAudit(audit)">Detail</button>
+          <ng-template #noVisualData>
+            <div
+              class="alert alert-info p-2 text-center"
+              style="max-width: 200px"
+            >
+              <small>Tidak ada data visual design.</small>
+            </div>
+          </ng-template>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- Abnormality Historical Section -->
-<div class="container mt-4" *ngIf="supplierAbnormalities.length > 0">
-  <div class="row">
-    <div class="col-12">
-      <div class="d-flex align-items-center justify-content-between mb-2">
-        <h5 class="mb-0">Abnormality Historical</h5>
-        <!-- Filter Buttons -->
-        <div>
-          <button class="btn btn-sm" 
-                  [ngClass]="{'btn-primary': selectedRange === 'all', 'btn-outline-primary': selectedRange !== 'all'}"
-                  (click)="setRange('all')">ALL</button>
-          <button class="btn btn-sm" 
-                  [ngClass]="{'btn-primary': selectedRange === '1m', 'btn-outline-primary': selectedRange !== '1m'}"
-                  (click)="setRange('1m')">1M</button>
-          <button class="btn btn-sm" 
-                  [ngClass]="{'btn-primary': selectedRange === '6m', 'btn-outline-primary': selectedRange !== '6m'}"
-                  (click)="setRange('6m')">6M</button>
-          <button class="btn btn-sm" 
-                  [ngClass]="{'btn-primary': selectedRange === '1y', 'btn-outline-primary': selectedRange !== '1y'}"
-                  (click)="setRange('1y')">1Y</button>
+    <!-- Data Kedatangan SAP Card (1/3 halaman) -->
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header text-center">
+          <h5>Data Kedatangan SAP</h5>
+        </div>
+        <div class="card-body">
+          <!-- Filter Tanggal Kedatangan dan Page Size -->
+          <div class="row align-items-center mb-3" style="max-width: 500px">
+            <div class="col-auto">
+              <label for="startDate" class="col-form-label fw-bold"
+                >Start:</label
+              >
+            </div>
+            <div class="col-auto">
+              <input
+                id="startDate"
+                type="date"
+                class="form-control form-control-sm"
+                [(ngModel)]="kedatanganStart"
+                (change)="onKedatanganDateChange()"
+              />
+            </div>
+            <div class="col-auto">
+              <label for="endDate" class="col-form-label fw-bold">End:</label>
+            </div>
+            <div class="col-auto">
+              <input
+                id="endDate"
+                type="date"
+                class="form-control form-control-sm"
+                [(ngModel)]="kedatanganEnd"
+                (change)="onKedatanganDateChange()"
+              />
+            </div>
+            <div class="col-auto">
+              <select
+                class="form-select form-select-sm"
+                [(ngModel)]="kedatanganPageSize"
+                (change)="resetKedatanganPage()"
+              >
+                <option *ngFor="let size of pageSizeOptions" [value]="size">
+                  {{ size }} per page
+                </option>
+              </select>
+            </div>
+          </div>
+          <div
+            *ngIf="
+              kedatanganData && kedatanganData.length > 0;
+              else noKedatangan
+            "
+          >
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm">
+                <thead>
+                  <tr>
+                    <th>LOT SAP</th>
+                    <th>QTY</th>
+                    <th>UNIT</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of paginatedKedatangan">
+                    <td>{{ item.lotno }}</td>
+                    <td>{{ item.insp_quantity }}</td>
+                    <td>{{ item.satuan }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div
+              class="d-flex justify-content-end align-items-center mt-2"
+              style="max-width: 500px"
+            >
+              <button
+                class="btn btn-sm btn-primary me-2"
+                (click)="prevKedatanganPage()"
+                [disabled]="kedatanganPage === 1"
+              >
+                Prev
+              </button>
+              <span
+                >Page {{ kedatanganPage }} of {{ totalKedatanganPages }}</span
+              >
+              <button
+                class="btn btn-sm btn-primary ms-2"
+                (click)="nextKedatanganPage()"
+                [disabled]="kedatanganPage >= totalKedatanganPages"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+          <ng-template #noKedatangan>
+            <div
+              class="alert alert-info p-2 text-center"
+              style="max-width: 300px"
+            >
+              <small>Tidak ada data kedatangan untuk periode ini.</small>
+            </div>
+          </ng-template>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="row mt-2">
-    <div class="col-12">
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>Type of Abnormality</th>
-            <th>Total Case</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let ab of supplierAbnormalities">
-            <td>{{ ab.abnormal }}</td>
-            <td>{{ ab.total_case }}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </div>

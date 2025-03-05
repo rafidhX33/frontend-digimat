@@ -90,3 +90,8 @@ $hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
 // Flex container for centering content
 
+/* Contoh styling untuk membuat container horizontal scroll lebih rapi */
+.d-flex.flex-row.overflow-auto {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}

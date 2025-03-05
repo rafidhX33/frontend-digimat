@@ -37,6 +37,7 @@
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "@nicky-lenaers/ngx-scroll-to": "^14.0.0",
+    "@popperjs/core": "^2.11.6",
     "@thisissoon/angular-inviewport": "^4.2.2",
     "@thisissoon/angular-scrollspy": "^2.2.0",
     "@types/jasmine": "^4.3.1",
