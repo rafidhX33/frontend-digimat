@@ -1,0 +1,33 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Daftar Material</h5>
+        <span class="badge bg-primary">Total: {{ totalMaterials }} Material</span>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Nama Material</th>
+                        <th>Kode Material</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let material of paginatedMaterials; let i = index">
+                        <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+                        <td>{{ material.nama_material }}</td>
+                        <td>{{ material.material_code }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <button class="btn btn-sm btn-primary" (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button class="btn btn-sm btn-primary" (click)="nextPage()" [disabled]="currentPage >= totalPages">Next</button>
+        </div>
+    </div>
+</div>

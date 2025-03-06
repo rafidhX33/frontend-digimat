@@ -9,6 +9,8 @@ import { ProjectsComponent } from "./projects/projects.component";
 import { NftComponent } from "./nft/nft.component";
 import { JobComponent } from './job/job.component';
 import { SupplierInfoComponent } from './supplier-info/supplier-info.component';
+import { SupplierComponent } from './supplier/supplier.component';
+import { MaterialComponent } from './material/material.component';
 
 const routes: Routes = [
   {
@@ -38,6 +40,14 @@ const routes: Routes = [
   {
     path: "supplier-info",
     component: SupplierInfoComponent
+  },
+  {
+    path: "supplier",
+    component: SupplierComponent
+  },
+  {
+    path: "material",
+    component: MaterialComponent
   }
 ];
 

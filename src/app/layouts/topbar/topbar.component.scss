@@ -1,39 +1,70 @@
+// 🌟 Mengubah warna topbar menjadi tosca
+#page-topbar {
+    background-color: #fff !important; // Warna tosca
+    border-radius: 8px;
+    border: 1px solid rgba(234, 234, 234, 0.765);
+    margin: 10px 22px 0px 25px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+// 🌟 Hover efek untuk topbar agar lebih interaktif
+#page-topbar:hover {
+    background-color: darken(#20c997, 10%);
+}
+
+// 🌟 Mengubah warna tombol dan ikon dalam topbar agar tetap kontras
+#page-topbar .btn-topbar {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.3s ease-in-out;
+}
+
+#page-topbar .btn-topbar:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+// 🌟 Warna ikon dalam topbar
+#page-topbar i {
+    color: white !important;
+}
+
+// 🌟 Warna teks dalam topbar
+#page-topbar .text-primary {
+    color: white !important;
+}
+
+// 🌟 Logo Responsif
 .responsive-logo img {
     height: 3rem;
     margin-top: 2px;
     transition: height 0.3s ease, margin-top 0.3s ease;
 }
 
-#page-topbar {
-    margin: 10px 22px 0px 25px;
-    border-radius: 8px;
-    border: 1px solid rgba(234, 234, 234, 0.765);
-}
-/* Media queries for responsiveness */
+// 🌟 Media queries untuk menjaga responsivitas
 @media (max-width: 1200px) {
     .responsive-logo img {
-        height: 3rem; /* Adjust the height for medium screens */
+        height: 3rem;
         margin-top: 3px;
     }
 }
 
 @media (max-width: 992px) {
     .responsive-logo img {
-        height: 3rem; /* Adjust the height for small screens */
+        height: 3rem;
         margin-top: 6px;
     }
 }
 
 @media (max-width: 768px) {
     .responsive-logo img {
-        height: 2.5rem; /* Adjust the height for extra small screens */
+        height: 2.5rem;
         margin-top: 4px;
     }
 }
 
 @media (max-width: 576px) {
     .responsive-logo img {
-        height: 2rem; /* Adjust the height for very small screens */
+        height: 2rem;
         margin-top: 2px;
     }
 }

@@ -1,0 +1,34 @@
+// 🌟 Pastikan body bisa di-scroll
+body {
+    overflow-x: hidden; // Hindari scroll horizontal yang tidak diinginkan
+    overflow-y: auto; // Aktifkan scroll jika konten panjang
+  }
+  
+  // 🌟 Pastikan layout horizontal tidak fixed
+  [layout="horizontal"] {
+    .app-menu {
+      position: relative !important;
+    }
+  
+    .navbar-menu {
+      position: relative !important;
+      width: 100%;
+    }
+  
+    .main-container {
+      overflow: auto;
+      height: 100vh; // Pastikan tinggi penuh agar bisa scroll
+    }
+  }
+  
+  // 🌟 Pastikan topbar tidak fixed agar bisa ikut scroll
+  .topbar {
+    position: relative !important;
+  }
+  
+  // 🌟 Pastikan sidebar tidak menghalangi scroll jika digunakan
+  .sidebar {
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+  

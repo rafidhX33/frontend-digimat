@@ -1,0 +1,39 @@
+// 🌟 Styling untuk tabel supplier
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+// 🌟 Styling untuk tabel
+.table {
+    margin-bottom: 0;
+    th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+    td {
+        vertical-align: middle;
+        font-size: 1rem;
+    }
+}
+
+// 🌟 Styling untuk pagination controls
+.d-flex.justify-content-between {
+    .btn {
+        min-width: 80px;
+    }
+}
+
+// 🌟 Hover efek agar lebih menarik
+.table tbody tr:hover {
+    background-color: rgba(32, 201, 151, 0.1); // Warna tosca lembut saat hover
+    transition: background-color 0.3s ease-in-out;
+}
+
+// 🌟 Responsivitas untuk layar kecil
+@media (max-width: 768px) {
+    .table {
+        font-size: 0.9rem;
+    }
+}

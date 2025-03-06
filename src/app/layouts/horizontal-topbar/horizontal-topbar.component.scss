@@ -1,0 +1,65 @@
+// 🌟 Mengatur warna horizontal topbar agar seragam
+.horizontal-topbar {
+    background-color: #4da9fe !important; // Warna tosca
+    border-bottom: 2px solid darken(#4da9fe, 10%); // Tambahkan efek batas bawah lebih gelap
+    padding: 10px 15px; // Pastikan padding yang cukup agar tidak terlalu besar
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+// 🌟 Hapus margin atas dan atur posisi agar menyatu dengan navbar
+
+
+// 🌟 Pastikan navbar tidak memiliki padding berlebih yang menyebabkan pemisahan
+.navbar-header {
+    padding: 0px 15px !important;
+}
+
+// 🌟 Warna teks agar tetap kontras
+.horizontal-topbar .nav-link,
+.horizontal-topbar .menu-title span {
+    color: white !important;
+}
+
+// 🌟 Hover efek agar lebih menarik
+.horizontal-topbar .nav-link:hover {
+    background-color: darken(#4da9fe, 10%);
+    transition: background-color 0.3s ease-in-out;
+}
+
+// 🌟 Sesuaikan tinggi elemen dalam topbar agar tampilan lebih rapi
+.horizontal-topbar .navbar-brand-box img {
+    height: 50px; // Sesuaikan ukuran logo agar tidak terlalu besar
+}
+
+// 🌟 Atur ikon dan tombol agar lebih kecil dan rapi
+.horizontal-topbar .btn-topbar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+// 🌟 Pastikan tidak ada margin yang menyebabkan pemisahan
+.layout-width {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+// 🌟 Responsivitas untuk layar kecil
+@media (max-width: 992px) {
+    .horizontal-topbar {
+        padding: 8px 10px; // Kurangi padding pada layar kecil
+    }
+
+    .horizontal-topbar .navbar-brand-box img {
+        height: 40px;
+    }
+
+    .horizontal-topbar .btn-topbar {
+        width: 35px;
+        height: 35px;
+    }
+}

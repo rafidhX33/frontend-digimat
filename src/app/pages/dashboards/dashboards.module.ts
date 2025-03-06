@@ -32,6 +32,8 @@ import { NftComponent } from './nft/nft.component';
 import { JobComponent } from './job/job.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SupplierInfoComponent } from './supplier-info/supplier-info.component';
+import { SupplierComponent } from './supplier/supplier.component';
+import { MaterialComponent } from './material/material.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { SupplierInfoComponent } from './supplier-info/supplier-info.component';
     ProjectsComponent,
     NftComponent,
     JobComponent,
-    SupplierInfoComponent
+    SupplierInfoComponent,
+    SupplierComponent,
+    MaterialComponent
   ],
   imports: [
     CommonModule,

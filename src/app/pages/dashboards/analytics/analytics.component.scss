@@ -1,17 +1,29 @@
-// Variables for colors to make the SCSS more maintainable
+// 🌟 Variables for colors
 $primary-color: #007bff;
 $status-color: #17a2b8;
 $complaint-color: #dc3545;
 $score-color: #ffc107;
 $hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+$bg-light-gray: #f8f9fa;
 
-// Main styles for cards and hover effects
+
+// 🌟 2. Container Utama
+.main-container {
+
+  min-height: 100vh;
+  padding: 20px;
+}
+
+// 🌟 3. Styling Card (Tetap Putih)
 .card {
-  transition: all 0.3s ease;
-  
+  background-color: white !important;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+
   &:hover {
     transform: translateY(-5px);
-    box-shadow: $hover-shadow;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
 
   .card-body {
@@ -20,60 +32,82 @@ $hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     align-items: center;
     justify-content: center;
   }
+
+  .card-header {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
 }
 
-// Card Header Styling
-.card-header {
-  font-weight: bold;
-  font-size: 1.2rem;
+// 🌟 4. Animasi Scroll Masuk dari Samping
+.scroll-animation {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+
+  &.show {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-// Supplier Logo Card
+// 🌟 5. Supplier Logo Card
 .supplier-logo {
   background-color: $primary-color;
   color: white;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
 
   &:hover {
     background-color: darken($primary-color, 10%);
   }
 
   img {
-    max-width: 100%;
+    max-width: 80%;
     height: auto;
+    margin-bottom: 5px;
   }
 }
 
-// Status Card
+// 🌟 6. Status, Score, dan Complaint Cards
 .status-card {
   background-color: $status-color;
   color: white;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
 
   &:hover {
     background-color: darken($status-color, 10%);
   }
 }
 
-// Supplier Score Card
 .score-card {
   background-color: $score-color;
   color: black;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
 
   &:hover {
     background-color: darken($score-color, 10%);
   }
 }
 
-// Complaint Card
 .complaint-card {
   background-color: $complaint-color;
   color: white;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
 
   &:hover {
     background-color: darken($complaint-color, 10%);
   }
 }
 
-// Hover Effect for text and background color changes
+// 🌟 7. Hover Effect for text and background color changes
 .hover-color:hover {
   background-color: $primary-color;
 }
@@ -82,16 +116,76 @@ $hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   color: white;
 }
 
-// Material and Supplier Dropdown Styles
-.form-select {
+// 🌟 8. Material and Supplier Dropdown Styles
+.form-select, ng-select {
   border-radius: 0.375rem;
   box-shadow: none;
+  width: 100%;
 }
 
-// Flex container for centering content
-
-/* Contoh styling untuk membuat container horizontal scroll lebih rapi */
+// 🌟 9. Horizontal Scroll (Jika Diperlukan)
 .d-flex.flex-row.overflow-auto {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
+}
+
+// 🌟 10. Styling untuk tombol di dalam Card agar tidak menempel dengan elemen lain
+.btn-sm {
+  margin-top: 10px;
+}
+
+
+// 🌟 Styling untuk kotak Halal
+.halal-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+// 🌟 Styling untuk logo Halal
+.halal-logo {
+  width: 80px; // Sesuaikan ukuran logo
+  height: auto;
+  margin-bottom: 10px;
+}
+
+// 🌟 Kotak status Halal berwarna hijau
+.halal-status {
+  background-color: #28a745; // Warna hijau
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+}
+
+// 🌟 Styling untuk tanggal validitas
+.valid-date {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+// 🌟 Responsivitas untuk layar lebih kecil
+@media (max-width: 768px) {
+  .halal-card {
+      padding: 15px;
+  }
+
+  .halal-logo {
+      width: 70px;
+  }
+
+  .halal-status {
+      font-size: 0.9rem;
+  }
+
+  .valid-date {
+      font-size: 0.85rem;
+  }
 }
