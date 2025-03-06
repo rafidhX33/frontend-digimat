@@ -173,7 +173,6 @@
     <div class="card-body">
       <div class="row" *ngIf="pdfs.length > 0; else noPdfData">
         <div *ngFor="let pdf of pdfs" class="col-md-4 mb-3">
-          <h6>{{ pdf.title }}</h6>
           <div class="border p-2">
             <iframe
               [src]="pdf.src"
@@ -196,307 +195,204 @@
     </div>
   </div>
 
-  <!-- Row untuk Supplier Audit, Abnormality Historical, dan Visual Design -->
-  <div class="row">
-    <!-- Supplier Audit & Visit Card (1/4 halaman) -->
-    <div class="col-md-3 mb-4">
-      <div class="card h-100">
-        <div class="card-header text-center">
-          <h5>Supplier Audit &amp; Visit</h5>
-        </div>
-        <div class="card-body p-0">
-          <ngb-carousel
-            *ngIf="supplierAudits.length > 0"
-            [showNavigationArrows]="true"
-            [showNavigationIndicators]="true"
-          >
-            <ng-template
-              ngbSlide
-              *ngFor="let audit of supplierAudits; let i = index"
-              id="audit-slide-{{ i }}"
-            >
-              <div class="p-3 border">
-                <div class="mb-2 text-center">
-                  <img
-                    *ngIf="audit.evidence; else noAuditImg"
-                    [src]="
-                      'https://myapps.aio.co.id/track/upload/' + audit.evidence
-                    "
-                    alt="Evidence"
-                    class="img-fluid"
-                    style="height: 150px; width: 100%; object-fit: cover"
-                  />
-                  <ng-template #noAuditImg>
-                    <img
-                      src="assets/images/no_picture.png"
-                      class="img-fluid"
-                      style="height: 150px; width: 100%; object-fit: cover"
-                      alt="No Evidence"
-                    />
-                  </ng-template>
-                </div>
-                <h6 class="mb-1 text-center">{{ audit.city }}</h6>
-                <p
-                  class="text-muted text-center mb-2"
-                  style="font-size: 0.8rem"
-                >
-                  {{ audit.date_complete | date : "dd MMM yyyy" }}
-                </p>
-                <div class="text-center">
-                  <button
-                    class="btn btn-sm btn-primary"
-                    (click)="detailAudit(audit)"
-                  >
-                    Detail
-                  </button>
-                </div>
-              </div>
-            </ng-template>
-          </ngb-carousel>
-          <div
-            *ngIf="supplierAudits.length === 0"
-            class="alert alert-info p-2 text-center"
-          >
-            <small>Tidak ada data audit.</small>
-          </div>
-        </div>
-      </div>
+  <!-- 4 Kotak dengan ukuran 1/4 halaman -->
+<div class="row">
+  <!-- Supplier Audit & Visit Card (1/4 halaman) -->
+<div class="col-md-3 mb-4">
+  <div class="card h-100">
+    <div class="card-header text-center">
+      <h5>Supplier Audit &amp; Visit</h5>
     </div>
-
-    <!-- Abnormality Historical Card (1/4 halaman) dengan paginasi -->
-    <div class="col-md-3 mb-4">
-      <div class="card h-100">
-        <div
-          class="card-header d-flex justify-content-between align-items-center"
+    <div class="card-body p-0">
+      <ngb-carousel
+        *ngIf="supplierAudits.length > 0"
+        [showNavigationArrows]="true"
+        [showNavigationIndicators]="true"
+      >
+        <ng-template
+          ngbSlide
+          *ngFor="let audit of supplierAudits; let i = index"
+          id="audit-slide-{{ i }}"
         >
-          <h5 class="mb-0">Abnormality Historical</h5>
-          <div>
-            <button
-              class="btn btn-sm me-1"
-              [ngClass]="{
-                'btn-primary': selectedRange === 'all',
-                'btn-outline-primary': selectedRange !== 'all'
-              }"
-              (click)="setRange('all')"
-            >
-              ALL
-            </button>
-            <button
-              class="btn btn-sm me-1"
-              [ngClass]="{
-                'btn-primary': selectedRange === '1m',
-                'btn-outline-primary': selectedRange !== '1m'
-              }"
-              (click)="setRange('1m')"
-            >
-              1M
-            </button>
-            <button
-              class="btn btn-sm me-1"
-              [ngClass]="{
-                'btn-primary': selectedRange === '6m',
-                'btn-outline-primary': selectedRange !== '6m'
-              }"
-              (click)="setRange('6m')"
-            >
-              6M
-            </button>
-            <button
-              class="btn btn-sm"
-              [ngClass]="{
-                'btn-primary': selectedRange === '1y',
-                'btn-outline-primary': selectedRange !== '1y'
-              }"
-              (click)="setRange('1y')"
-            >
-              1Y
-            </button>
-          </div>
-        </div>
-        <div class="card-body p-2">
-          <div *ngIf="supplierAbnormalities.length > 0; else noAbnormalityData">
-            <div class="table-responsive">
-              <table class="table table-bordered table-sm mb-0">
-                <thead>
-                  <tr>
-                    <th>Type</th>
-                    <th>Total</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let ab of paginatedAbnormalities">
-                    <td>{{ ab.abnormal }}</td>
-                    <td>{{ ab.total_case }}</td>
-                    <td>{{ ab.date | date : "dd MMM yyyy" }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="d-flex justify-content-end align-items-center mt-2">
-              <button
-                class="btn btn-sm btn-primary me-2"
-                (click)="prevAbnormalityPage()"
-                [disabled]="abnormalityPage === 1"
-              >
-                Prev
-              </button>
-              <span
-                >Page {{ abnormalityPage }} of {{ totalAbnormalityPages }}</span
-              >
-              <button
-                class="btn btn-sm btn-primary ms-2"
-                (click)="nextAbnormalityPage()"
-                [disabled]="abnormalityPage >= totalAbnormalityPages"
-              >
-                Next
-              </button>
-            </div>
-          </div>
-          <ng-template #noAbnormalityData>
-            <div
-              class="alert alert-info p-2 text-center"
-              style="max-width: 200px"
-            >
-              <small>Tidak ada data abnormality.</small>
-            </div>
-          </ng-template>
-        </div>
-      </div>
-    </div>
-
-    <!-- Visual Design Card (1/4 halaman) -->
-    <div class="col-md-3 mb-4">
-      <div class="card h-100">
-        <div class="card-header text-center">
-          <h5>Visual Design</h5>
-        </div>
-        <div class="card-body text-center">
-          <div *ngIf="visualDesigns.length > 0; else noVisualData">
-            <div *ngFor="let visual of visualDesigns" class="mb-2">
+          <div class="p-3 border">
+            <div class="mb-2 text-center">
               <img
-                [src]="visual.image"
-                alt="Visual"
-                class="img-fluid"
-                style="max-height: 150px; object-fit: contain"
+                *ngIf="audit.evidence; else noAuditImg"
+                [src]="'https://myapps.aio.co.id/track/upload/' + audit.evidence"
+                alt="Evidence"
+                class="img-fluid uniform-img"
               />
+              <ng-template #noAuditImg>
+                <img
+                  src="assets/images/no_picture.png"
+                  class="img-fluid uniform-img"
+                  alt="No Evidence"
+                />
+              </ng-template>
+            </div>
+            <h6 class="mb-1 text-center">{{ audit.city }}</h6>
+            <p class="text-muted text-center mb-2" style="font-size: 0.8rem">
+              {{ audit.date_complete | date : "dd MMM yyyy" }}
+            </p>
+            <div class="text-center">
+              <button class="btn btn-sm btn-primary" (click)="detailAudit(audit)">
+                Detail
+              </button>
             </div>
           </div>
-          <ng-template #noVisualData>
-            <div
-              class="alert alert-info p-2 text-center"
-              style="max-width: 200px"
-            >
-              <small>Tidak ada data visual design.</small>
-            </div>
-          </ng-template>
-        </div>
+        </ng-template>
+      </ngb-carousel>
+      <div *ngIf="supplierAudits.length === 0" class="alert alert-info p-2 text-center">
+        <small>Tidak ada data audit.</small>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- Data Kedatangan SAP Card (1/3 halaman) -->
-    <div class="col-md-4 mb-4">
-      <div class="card h-100">
-        <div class="card-header text-center">
-          <h5>Data Kedatangan SAP</h5>
-        </div>
-        <div class="card-body">
-          <!-- Filter Tanggal Kedatangan dan Page Size -->
-          <div class="row align-items-center mb-3" style="max-width: 500px">
-            <div class="col-auto">
-              <label for="startDate" class="col-form-label fw-bold"
-                >Start:</label
-              >
-            </div>
-            <div class="col-auto">
-              <input
-                id="startDate"
-                type="date"
-                class="form-control form-control-sm"
-                [(ngModel)]="kedatanganStart"
-                (change)="onKedatanganDateChange()"
-              />
-            </div>
-            <div class="col-auto">
-              <label for="endDate" class="col-form-label fw-bold">End:</label>
-            </div>
-            <div class="col-auto">
-              <input
-                id="endDate"
-                type="date"
-                class="form-control form-control-sm"
-                [(ngModel)]="kedatanganEnd"
-                (change)="onKedatanganDateChange()"
-              />
-            </div>
-            <div class="col-auto">
-              <select
-                class="form-select form-select-sm"
-                [(ngModel)]="kedatanganPageSize"
-                (change)="resetKedatanganPage()"
-              >
-                <option *ngFor="let size of pageSizeOptions" [value]="size">
-                  {{ size }} per page
-                </option>
-              </select>
-            </div>
+<!-- Tambahkan CSS -->
+<style>
+  .uniform-img {
+    width: 100%; /* Pastikan gambar mengisi area */
+    height: 180px; /* Tetapkan tinggi gambar agar seragam */
+    object-fit: cover; /* Pastikan gambar tidak terdistorsi */
+    border-radius: 5px; /* Opsional, untuk tampilan lebih halus */
+  }
+</style>
+
+
+  <!-- Visual Design -->
+  <div class="col-md-3 mb-4">
+    <div class="card h-100">
+      <div class="card-header text-center">
+        <h5>Visual Design</h5>
+      </div>
+      <div class="card-body text-center">
+        <p>Konten Visual Design</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Material Flow Process -->
+  <div class="col-md-3 mb-4">
+    <div class="card h-100">
+      <div class="card-header text-center">
+        <h5>Material Flow Process</h5>
+      </div>
+      <div class="card-body text-center">
+        <p>Konten Material Flow Process</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supplier Quality Device -->
+  <div class="col-md-3 mb-4">
+    <div class="card h-100">
+      <div class="card-header text-center">
+        <h5>Supplier Quality Device</h5>
+      </div>
+      <div class="card-body text-center">
+        <p>Konten Supplier Quality Device</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <!-- Abnormality Historical (1/3 halaman) -->
+  <div class="col-md-6 mb-4 d-flex flex-column">
+    <div class="card h-100">
+      <div class="card-header text-center">
+        <h5>Abnormality Historical</h5>
+      </div>
+      <div class="card-body p-2">
+        <p class="text-muted text-center">Total Data: {{ supplierAbnormalities.length }}</p>
+        <div *ngIf="supplierAbnormalities.length > 0; else noAbnormalityData">
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm mb-0">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Total</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ab of paginatedAbnormalities">
+                  <td>{{ ab.abnormal }}</td>
+                  <td>{{ ab.total_case }}</td>
+                  <td>{{ ab.date | date : "dd MMM yyyy" }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div
-            *ngIf="
-              kedatanganData && kedatanganData.length > 0;
-              else noKedatangan
-            "
-          >
-            <div class="table-responsive">
-              <table class="table table-bordered table-sm">
-                <thead>
-                  <tr>
-                    <th>LOT SAP</th>
-                    <th>QTY</th>
-                    <th>UNIT</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of paginatedKedatangan">
-                    <td>{{ item.lotno }}</td>
-                    <td>{{ item.insp_quantity }}</td>
-                    <td>{{ item.satuan }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div
-              class="d-flex justify-content-end align-items-center mt-2"
-              style="max-width: 500px"
-            >
-              <button
-                class="btn btn-sm btn-primary me-2"
-                (click)="prevKedatanganPage()"
-                [disabled]="kedatanganPage === 1"
-              >
-                Prev
-              </button>
-              <span
-                >Page {{ kedatanganPage }} of {{ totalKedatanganPages }}</span
-              >
-              <button
-                class="btn btn-sm btn-primary ms-2"
-                (click)="nextKedatanganPage()"
-                [disabled]="kedatanganPage >= totalKedatanganPages"
-              >
-                Next
-              </button>
-            </div>
+          <div class="d-flex justify-content-end align-items-center mt-2">
+            <button class="btn btn-sm btn-primary me-2" (click)="prevAbnormalityPage()" [disabled]="abnormalityPage === 1">Prev</button>
+            <span>Page {{ abnormalityPage }} of {{ totalAbnormalityPages }}</span>
+            <button class="btn btn-sm btn-primary ms-2" (click)="nextAbnormalityPage()" [disabled]="abnormalityPage >= totalAbnormalityPages">Next</button>
           </div>
-          <ng-template #noKedatangan>
-            <div
-              class="alert alert-info p-2 text-center"
-              style="max-width: 300px"
-            >
-              <small>Tidak ada data kedatangan untuk periode ini.</small>
-            </div>
-          </ng-template>
         </div>
+        <ng-template #noAbnormalityData>
+          <div class="alert alert-info p-2 text-center">
+            <small>Tidak ada data abnormality.</small>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Kedatangan SAP (1/3 halaman) -->
+  <div class="col-md-6 mb-4 d-flex flex-column">
+    <div class="card h-100">
+      <div class="card-header text-center">
+        <h5>Data Kedatangan SAP</h5>
+      </div>
+      <div class="card-body">
+        <p class="text-muted text-center">Total Data: {{ kedatanganData.length }}</p>
+        <div class="row align-items-center mb-3" style="max-width: 500px">
+          <div class="col-auto">
+            <label for="startDate" class="col-form-label fw-bold">Start:</label>
+          </div>
+          <div class="col-auto">
+            <input id="startDate" type="date" class="form-control form-control-sm" [(ngModel)]="kedatanganStart" (change)="onKedatanganDateChange()" />
+          </div>
+          <div class="col-auto">
+            <label for="endDate" class="col-form-label fw-bold">End:</label>
+          </div>
+          <div class="col-auto">
+            <input id="endDate" type="date" class="form-control form-control-sm" [(ngModel)]="kedatanganEnd" (change)="onKedatanganDateChange()" />
+          </div>
+          <div class="col-auto">
+            <select class="form-select form-select-sm" [(ngModel)]="kedatanganPageSize" (change)="resetKedatanganPage()">
+              <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }} per page</option>
+            </select>
+          </div>
+        </div>
+        <div *ngIf="kedatanganData.length > 0; else noKedatangan">
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th>LOT SAP</th>
+                  <th>QTY</th>
+                  <th>UNIT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of paginatedKedatangan">
+                  <td>{{ item.lotno }}</td>
+                  <td>{{ item.insp_quantity }}</td>
+                  <td>{{ item.satuan }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <ng-template #noKedatangan>
+          <div class="alert alert-info p-2 text-center">
+            <small>Tidak ada data kedatangan untuk periode ini.</small>
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>
