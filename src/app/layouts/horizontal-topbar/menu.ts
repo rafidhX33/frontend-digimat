@@ -20,6 +20,12 @@ export const MENU: MenuItem[] = [
         link: "/analytics",
         parentId: 2,
       },
+      {
+        id: 4,
+        label: "Raw Material",
+        link: "/raw-material",
+        parentId: 2,
+      }
     ],
   },
   // {

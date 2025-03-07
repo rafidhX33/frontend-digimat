@@ -34,6 +34,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { SupplierInfoComponent } from './supplier-info/supplier-info.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { MaterialComponent } from './material/material.component';
+import { RawMaterialComponents } from './raw-material/raw-material.component';
+
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import { MaterialComponent } from './material/material.component';
     JobComponent,
     SupplierInfoComponent,
     SupplierComponent,
-    MaterialComponent
+    MaterialComponent,
+    RawMaterialComponents
   ],
   imports: [
     CommonModule,

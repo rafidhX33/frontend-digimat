@@ -11,6 +11,8 @@ import { JobComponent } from './job/job.component';
 import { SupplierInfoComponent } from './supplier-info/supplier-info.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { MaterialComponent } from './material/material.component';
+import { Path } from 'leaflet';
+import { RawMaterialComponents } from './raw-material/raw-material.component';
 
 const routes: Routes = [
   {
@@ -48,6 +50,10 @@ const routes: Routes = [
   {
     path: "material",
     component: MaterialComponent
+  },
+  {
+    path: "raw-material",
+    component: RawMaterialComponents
   }
 ];
 
