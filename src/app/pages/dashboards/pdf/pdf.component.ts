@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 interface Supplier {
   kode_vendor: string;
@@ -40,7 +41,7 @@ export class PdfComponent implements OnInit {
   // API URL (sesuaikan jika diperlukan)
   private apiUrl = 'http://localhost:5000';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.loadMaterials();
@@ -154,6 +155,12 @@ export class PdfComponent implements OnInit {
       }
     );
   }
+
+    /** 🔹 Navigasi kembali ke halaman Supplier */
+    goBackToSupplier(): void {
+      this.router.navigate(["/supplier"]);
+    }
+  
 
   /** Ambil daftar dokumen yang sudah diupload */
   getDocuments(): void {

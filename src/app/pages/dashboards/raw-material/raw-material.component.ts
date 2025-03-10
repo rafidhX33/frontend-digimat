@@ -59,7 +59,7 @@ interface KedatanganData {
   templateUrl: "./raw-material.component.html",
   styleUrls: ["./raw-material.component.scss"],
 })
-export class RawMaterialComponents implements OnInit {
+export class RawMaterialComponent implements OnInit {
   breadCrumbItems: Array<{}> = [];
   // Dropdowns
   selectedMaterial: string | null = null;
@@ -116,26 +116,26 @@ export class RawMaterialComponents implements OnInit {
       .substring(0, 10);
   }
 
-  /** Load daftar material */
-  loadMaterials(): void {
-    this.http.get<any>(`${this.apiUrl}/api/materials`).subscribe(
-      (response) => {
-        if (response.success && Array.isArray(response.data)) {
-          this.materials = response.data;
-          if (this.materials.length > 0) {
-            this.selectedMaterial = this.materials[0].material_code;
-            this.updateSuppliers();
-          }
-        } else {
-          console.error("Invalid data format for materials:", response);
+ /** 🔹 Load daftar material khusus PM (Packaging Supplier) */
+ loadMaterials(): void {
+  this.http.get<any>(`${this.apiUrl}/api/materials/category/RM (RAW Supplier)`).subscribe(
+    (response) => {
+      if (response.success && Array.isArray(response.data)) {
+        this.materials = response.data;
+        if (this.materials.length > 0) {
+          this.selectedMaterial = this.materials[0].material_code;
+          this.updateSuppliers();
         }
-      },
-      (error) => {
-        console.error("Error loading materials:", error);
-        Swal.fire("Error", "Gagal memuat data material.", "error");
+      } else {
+        console.error("Invalid data format for materials:", response);
       }
-    );
-  }
+    },
+    (error) => {
+      console.error("Error loading materials:", error);
+      Swal.fire("Error", "Gagal memuat data material.", "error");
+    }
+  );
+}
 
   /** Update supplier berdasarkan material */
   updateSuppliers(): void {

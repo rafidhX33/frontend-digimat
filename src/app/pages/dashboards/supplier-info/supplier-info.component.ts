@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 /** Struktur data Supplier dari API /api/suppliers */
 interface Supplier {
@@ -42,7 +43,7 @@ export class SupplierInfoComponent implements OnInit {
   /** API base URL (sesuaikan dengan backend Anda) */
   private apiUrl = 'http://localhost:5000';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
     this.loadSuppliers();
@@ -75,6 +76,12 @@ export class SupplierInfoComponent implements OnInit {
       }
     }
   }
+
+    /** 🔹 Navigasi kembali ke halaman Supplier */
+    goBackToSupplier(): void {
+      this.router.navigate(["/supplier"]);
+    }
+  
 
   /** Mengirim data supplier info (kode_vendor, status, dan logo) ke backend */
   onSubmitSupplierInfo(event: Event): void {

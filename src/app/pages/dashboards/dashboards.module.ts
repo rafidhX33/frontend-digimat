@@ -34,7 +34,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { SupplierInfoComponent } from './supplier-info/supplier-info.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { MaterialComponent } from './material/material.component';
-import { RawMaterialComponents } from './raw-material/raw-material.component';
+import { RawMaterialComponent } from './raw-material/raw-material.component';
 
 
 @NgModule({
@@ -48,7 +48,7 @@ import { RawMaterialComponents } from './raw-material/raw-material.component';
     SupplierInfoComponent,
     SupplierComponent,
     MaterialComponent,
-    RawMaterialComponents
+    RawMaterialComponent
   ],
   imports: [
     CommonModule,

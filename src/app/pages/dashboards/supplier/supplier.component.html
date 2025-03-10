@@ -16,6 +16,7 @@
                         <th>Dokumen</th>
                         <th>Audit</th>
                         <th>Abnormality</th>
+                        <th>Aksi</th> <!-- Tambahkan kolom untuk tombol -->
                     </tr>
                 </thead>
                 <tbody>
@@ -45,6 +46,17 @@
                             <i *ngIf="supplier.hasAbnormality" class="bi bi-check-circle text-success"></i>
                             <i *ngIf="!supplier.hasAbnormality" class="bi bi-x-circle text-danger"></i>
                         </td>
+                        <td>
+                            <!-- Tombol untuk Upload Dokumen -->
+                            <button class="btn btn-sm btn-outline-primary me-2" (click)="navigateToUpload(supplier.kode_vendor)">
+                                <i class="bi bi-file-earmark-arrow-up"></i> Upload Dokumen
+                            </button>
+                            
+                            <!-- Tombol untuk Logo & Status -->
+                            <button class="btn btn-sm btn-outline-secondary" (click)="navigateToSupplierInfo(supplier.kode_vendor)">
+                                <i class="bi bi-info-circle"></i> Logo & Status
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -58,3 +70,5 @@
         </div>
     </div>
 </div>
+
+

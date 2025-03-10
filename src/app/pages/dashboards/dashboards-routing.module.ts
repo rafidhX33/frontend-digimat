@@ -12,7 +12,8 @@ import { SupplierInfoComponent } from './supplier-info/supplier-info.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { MaterialComponent } from './material/material.component';
 import { Path } from 'leaflet';
-import { RawMaterialComponents } from './raw-material/raw-material.component';
+import { RawMaterialComponent } from './raw-material/raw-material.component';
+
 
 const routes: Routes = [
   {
@@ -53,7 +54,7 @@ const routes: Routes = [
   },
   {
     path: "raw-material",
-    component: RawMaterialComponents
+    component: RawMaterialComponent
   }
 ];
 
